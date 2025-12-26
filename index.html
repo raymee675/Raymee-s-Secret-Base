@@ -19,9 +19,6 @@
     -->
   </head>
   <body>
-    <div id="overlay"></div>
-    <div id="Black"></div>
-
     <!--【修正】背景画像は Products フォルダ に BackGroundImage.拡張子 の形で保存すること-->
     <img id="BackGroundImage" />
 
@@ -30,298 +27,61 @@
       <img src="" alt="" id="TitleImage" />
     </div>
 
-    <!--ハンバーガーメニューは修正不要-->
+    <!--ハンバーガーメニュー
     <header style="z-index: 9000">
       <div class="hamburger" id="hamburger" style="z-index: 10000">☰</div>
       <nav class="mobile-menu" id="mobileMenu">
         <ul id="mobileMenuList"></ul>
       </nav>
     </header>
+  -->
 
     <main>
-      <div id="cont" class="container">
-        <aside class="desktop-menu">
-          <div style="display: block; text-align: center">
-            <!--【修正】メニューアイコンは Products フォルダに MenuBox.拡張子 の形で保存すること-->
-            <img id="menuIcon" />
-
-            <!--メニューボタン-->
-            <ul id="desktopMenuList" style="list-style: none"></ul>
-            <br />
-            <!--アイコン（X,Instagram）-->
-            <div class="iconBox">
-              <div
-                style="
-                  background-color: white;
-                  justify-content: center;
-                  align-items: center;
-                "
+      <div class="container layout">
+        <aside id="sidebar" class="card">
+          <div class="sidebar-inner">
+            <div class="sidebar-header">
+              <div class="kicker">Menu</div>
+              <button
+                id="sidebarToggle"
+                class="btn btn-ghost"
+                aria-label="Toggle menu"
               >
-                <a
-                  href="https://x.com/tk_oriken"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style="display: flex; align-items: center; padding: 3px"
-                >
-                  <img
-                    src="https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@latest/data/WEBPimages/Xicon.webp"
-                    alt="X Icon"
-                    style="width: auto; height: 48px"
-                  />
-                  <p style="color: black; margin-left: 10px">公式 X</p>
-                </a>
-              </div>
-
-              <div class="iconBox">
-                <a
-                  href="https://www.instagram.com/tk_oriken/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style="display: flex; align-items: center; padding: 3px"
-                >
-                  <img
-                    src="https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@latest/data/WEBPimages/Instaicon.webp"
-                    alt="Instagram Icon"
-                    style="width: auto; height: 48px"
-                  />
-                  <p style="margin-left: 10px">公式 Instagram</p>
-                </a>
-              </div>
+                ☰
+              </button>
             </div>
+            <ul class="menu" id="menuList">
+              <li class="menu-item" data-content="ホームの概要を表示します。">
+                <span class="icon">🏠</span><span class="label">Home</span>
+              </li>
+              <li
+                class="menu-item"
+                data-content="プロフィール情報を表示します。"
+              >
+                <span class="icon">👤</span><span class="label">Profile</span>
+              </li>
+              <li class="menu-item" data-content="設定を表示します。">
+                <span class="icon">⚙️</span><span class="label">Settings</span>
+              </li>
+              <li class="menu-item" data-content="お知らせを表示します。">
+                <span class="icon">🔔</span
+                ><span class="label">Notifications</span>
+              </li>
+            </ul>
           </div>
         </aside>
 
-        <div id="mainDiv">
-          <!--タイトルイメージの設定-->
-          <!--
-          現在は BackFog.拡張子 がタイトルの背景と設定されている
-          背景を変更するときは、〈名前〉.拡張子 という画像ファイルを Products に上げて
-          下の background-image のリンクの BackFog.webp の名称を 〈名前〉.webp に変更してください
-
-          またこの中の要素は更新難易度高めです。
-          よくわからなかったら上の背景に
-          タイトルにしたい画像を設定し、中身のテキストをすべて削除して対応してください。
-          -->
-          <div
-            style="
-              display: block;
-              background-image: url(https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@latest/data/WEBPimages/BackFog.webp);
-              background-size: cover;
-              background-repeat: no-repeat;
-              background-position: top;
-              text-align: center;
-              margin-top: 60px;
-              padding-top: 120px;
-            "
-          >
-            <!--以下の３つはタイトル表示のコード-->
-            <p>ORION</p>
-            <p style="font-size: 82px">折音</p>
-            <p>筑駒折紙研究会 2025 Presents</p>
-
-            <br />
-            <br />
-
-            <!--文字、画像、文字の順で表示するコード-->
-            <div style="justify-content: start">
-              <!--上段の文字-->
-              <p style="margin-left: 20%; text-align: left; font-size: 32px">
-                聴こう、
-              </p>
-            </div>
-            <!--
-            真ん中の画像、 logo.拡張子を表示するようにしている
-            画像を変更するときは <名前>.拡張子 とした画像データを Products の保存し、
-            下の logo.webp を <名前>.webp に変更するように
-            -->
-            <img
-              src="https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@latest/data/WEBPimages/logo.webp"
-              alt=""
-              style="height: 400px; width: auto"
-              class="fade-in"
-            />
-
-            <div style="justify-content: end">
-              <!--下段の文字-->
-              <p
-                style="
-                  margin-right: 20%;
-                  text-align: right;
-                  font-size: 32px;
-                  margin-bottom: 200px;
-                "
-              >
-                紙の瞬きを。
-              </p>
-            </div>
-            <br />
-            <br />
-          </div>
-
-          <!--【修正】ここの文言はテキトーに直して-->
-          <div style="padding: 20px">
+        <section id="mainArea">
+          <div id="contentArea">
             <p>
-              筑駒折紙研究会 2025 の公式ウェブサイトです。<br />
-              文化祭の展示や日々の活動など、色んな情報を発信していきます。
+              aaaaaaaaaaaa<br />bbbbbbbbbbbbb<br />ccccccccccccc<br />
+              ddddddddddddddd<br />eeeeeeeeeeeee<br />fffffffffffff<br />
             </p>
           </div>
-
-          <!--【修正】筑駒文化祭の告知-->
-          <div style="padding: 20px; display: block; height: fit-content">
-            <div>
-              <p style="font-size: 38px">■ 筑駒文化祭で展示を行います！</p>
-              <p>
-                　10月31日、11月1,2日の三日間、筑駒文化祭で展示活動を行います。会員の個人作品だけでなく、『龍神3.5』や『フェニックス』などの大型の作品を特設してお待ちしております。是非ご来場ください。
-                アクセスは
-
-                <!--【修正】年度ごとに文化祭の公式サイトのリンクに変更すること-->
-                <a
-                  href="https://tsukukoma.bunkasai.info/"
-                  style="color: aliceblue"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  >筑駒文化祭公式 HP </a
-                >をご覧ください
-              </p>
-            </div>
-            <img
-              src="https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@latest/data/WEBPimages/筑駒正面.webp"
-              alt=""
-              style="
-                max-height: 400px;
-                max-width: 400px;
-                height: auto;
-                width: 80%;
-                margin: 20px;
-                object-fit: contain;
-              "
-              class="fade-in"
-            />
-          </div>
-        </div>
-
-        <!--作品の表示の為の要素（触るな）フリじゃないよ-->
-        <div>
-          <img id="ContentTitle_Image" />
-          <div
-            id="Content_Text"
-            style="
-              display: none;
-              background-image: url(https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@latest/data/WEBPimages/BackFog.webp);
-              background-size: cover;
-              background-repeat: no-repeat;
-              background-position: top;
-              text-align: center;
-              margin-top: -10px;
-              padding-top: 100px;
-              padding-bottom: -30px;
-              height: fit-content;
-            "
-          >
-            <p
-              id="flavorText"
-              style="text-align: center; max-width: 80%; margin: auto"
-            >
-              ERROR
-            </p>
-            <br />
-            <br />
-          </div>
-          <br />
-          <div style="display: block; text-align: center; padding: 20px">
-            <p style="font-size: 38px" id="title_Text">■ 個人作品</p>
-            <div style="display: flex; justify-content: center">
-              <p id="title_Exp" style="width: 96%"></p>
-            </div>
-          </div>
-          <br />
-
-          <section style="padding: 20px" class="content">
-            <ul id="image-list" class="ilist"></ul>
-            <div id="SpecialContent"></div>
-            <div style="height: fit-content"></div>
-          </section>
-        </div>
-
-        <!--いい感じにブラー処理-->
-        <img
-          src="https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@latest/data/WEBPimages/BackFog.webp"
-          alt=""
-          style="
-            transform: rotate(180deg);
-            width: 100%;
-            height: 60px;
-            margin-bottom: -20px;
-          "
-        />
-
-        <!--一番下のバーナー-->
-        <div style="background-color: black; text-align: center; margin: 0px">
-          <div
-            style="
-              background-color: black;
-              background-size: cover;
-              background-repeat: no-repeat;
-              background-position: top;
-              height: fit-content;
-              width: auto;
-              object-fit: contain;
-            "
-          >
-            <img
-              src="https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@v1.0.3/data/WEBPimages/BelowTitle.webp"
-              alt=""
-              style="width: 100%; height: auto; object-fit: contain"
-            />
-
-            <!--
-            バーナーの文言です、適宜変更してOk
-            @Raymeela ってなってるところは私の X アカウントです。
-            プログラムで困ったら、ここに DM をください。
-            対応します。
-            -->
-            <p style="color: #999999">
-              <a
-                href="https://x.com/tsukasa675?s=11"
-                style="color: cornflowerblue"
-                target="_blank"
-                rel="noopener noreferrer"
-                >@Raymeela</a
-              ><br />
-            </p>
-            <div style="display: flex; text-align: center">
-              <div
-                style="
-                  background-color: white;
-                  justify-content: center;
-                  align-items: center;
-                  padding-right: 40px;
-                  margin-left: 30px;
-                  margin-right: 30px;
-                  margin-bottom: 60px;
-                "
-                class="iconBox"
-              >
-                <a
-                  href="https://x.com/tsukasa675?s=11"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style="display: flex; align-items: center; padding: 3px"
-                >
-                  <img
-                    src="https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@v1.0.3/data/WEBPimages/Xicon.webp"
-                    alt="X Icon"
-                    style="width: auto; height: 48px"
-                  />
-                  <p style="color: black; margin-left: 10px">公式 X</p>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
+        </section>
       </div>
     </main>
     <div></div>
-    <script src="Script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>
