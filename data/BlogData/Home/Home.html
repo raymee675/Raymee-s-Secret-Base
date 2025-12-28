@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>レイミーの秘密基地</title>
+    <meta name="description" content="絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。知的好奇心と時間が有り余っている方にぜひ読んでいただきたいです。" />
+    <meta name="keywords" content="レイミーの秘密基地" />
+    <link rel="stylesheet" href="style.css" />
+
+    <link
+      rel="icon"
+      href="https://cdn.jsdelivr.net/gh/tkorigami16-lab/TKoriken@latest/data/WEBPimages/favicon.webp"
+    />
+  </head>
+
+  <body>
+    <!--【修正】背景画像は Products フォルダ に BackGroundImage.拡張子 の形で保存すること-->
+    <img id="BackGroundImage" />
+
+    <!--【修正】タイトルイメージは Products フォルダ に Title.拡張子 の形で保存すること-->
+    <div id="loadPanel" class="loading">
+      <img src="" alt="" id="TitleImage" />
+    </div>
+
+    <!--ハンバーガーメニュー
+    <header style="z-index: 9000">
+      <div class="hamburger" id="hamburger" style="z-index: 10000">☰</div>
+      <nav class="mobile-menu" id="mobileMenu">
+        <ul id="mobileMenuList"></ul>
+      </nav>
+    </header>
+  -->
+
+    <main>
+      <div class="container layout">
+        <aside id="sidebar" class="card">
+          <div class="sidebar-inner">
+            <div class="sidebar-header">
+              <button
+                id="sidebarToggle"
+                class="btn btn-ghost"
+                aria-label="Toggle menu"
+              >
+                ☰
+              </button>
+            </div>
+            <ul class="menu" id="menuList">
+              <li class="menu-item" data-url="data/BlogData/Home/Home.html" data-content="ホームの概要を表示します。">
+                <span class="icon">🏠</span><span class="label">Home</span>
+              </li>
+              <li
+                class="menu-item"
+                data-url="#profile"
+                data-content="プロフィール情報を表示します。"
+              >
+                <span class="icon">👤</span><span class="label">Profile</span>
+              </li>
+              <li class="menu-item" data-url="#settings" data-content="設定を表示します。">
+                <span class="icon">⚙️</span><span class="label">Settings</span>
+              </li>
+              <li class="menu-item" data-url="#notifications" data-content="お知らせを表示します。">
+                <span class="icon">🔔</span
+                ><span class="label">Notifications</span>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <section id="mainArea">
+          <div id="contentArea">
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Welcome to レイミーの秘密基地</div> 
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <div></div>
+    <script src="script.js"></script>
+  </body>
+</html>
