@@ -105,14 +105,13 @@ def process_item(src_item: Path, meta: dict):
     video_exts = ('.mp4', '.mov', '.m4v', '.webm', '.ogv')
     audio_exts = ('.mp3', '.wav', '.aac', '.ogg', '.flac', '.m4a')
 
-    # find media src attributes (img, source, video, audio)
-    media_matches = MEDIA_RE.findall(html)
-    replaced = html
-    for media_src in media_matches:
+    # replace src attributes precisely using a callback so only the attribute value is changed
+    def _replace_src(match):
+        original = match.group(0)
+        src = match.group(1)
         # ignore absolute urls
-        src = media_src
         if src.startswith("http://") or src.startswith("https://") or src.startswith("//"):
-            continue
+            return original
         # resolve source path relative to html file
         src_path = (html_path.parent / src).resolve()
         if not src_path.exists():
@@ -120,8 +119,8 @@ def process_item(src_item: Path, meta: dict):
             if alt.exists():
                 src_path = alt
         if not src_path.exists():
-            print(f"Media not found: {src} (from {html_path}), skipping")
-            continue
+            print(f"Media not found: {src} (from {html_path}), leaving original reference")
+            return original
 
         ext = Path(src).suffix.lower()
         # images: convert to webp
@@ -129,8 +128,8 @@ def process_item(src_item: Path, meta: dict):
             dest_name = Path(src).stem + ".webp"
             dest_img_path = images_dir / dest_name
             convert_to_webp(src_path, dest_img_path)
-            replaced = replaced.replace(src, f"images/{dest_name}")
-            continue
+            new_src = f"images/{dest_name}"
+            return original.replace(src, new_src, 1)
 
         # videos: copy into videos/
         if ext in video_exts:
@@ -142,9 +141,9 @@ def process_item(src_item: Path, meta: dict):
                 shutil.copy2(src_path, dest_video)
             except Exception as e:
                 print(f"Failed to copy video {src_path}: {e}")
-                continue
-            replaced = replaced.replace(src, f"videos/{dest_name}")
-            continue
+                return original
+            new_src = f"videos/{dest_name}"
+            return original.replace(src, new_src, 1)
 
         # audio: copy into audio/
         if ext in audio_exts:
@@ -156,9 +155,14 @@ def process_item(src_item: Path, meta: dict):
                 shutil.copy2(src_path, dest_audio)
             except Exception as e:
                 print(f"Failed to copy audio {src_path}: {e}")
-                continue
-            replaced = replaced.replace(src, f"audio/{dest_name}")
-            continue
+                return original
+            new_src = f"audio/{dest_name}"
+            return original.replace(src, new_src, 1)
+
+        # unknown ext: leave as-is
+        return original
+
+    replaced = MEDIA_RE.sub(_replace_src, html)
 
     # write HTML using original source filename
     dest_html_name = html_path.name
