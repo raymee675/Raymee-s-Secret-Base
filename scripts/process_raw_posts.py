@@ -19,7 +19,7 @@ BLOG_DIR = ROOT / "data" / "BlogData"
 META_FILE = BLOG_DIR / "posts.json"
 ARCHIVE_DIR = RAW_DIR / "processed"
 
-IMG_RE = re.compile(r'<img[^>]+src=["\']([^"\']+)["\']', flags=re.I)
+MEDIA_RE = re.compile(r'<(?:img|source|video|audio)[^>]+src=["\']([^"\']+)["\']', flags=re.I)
 TITLE_RE = re.compile(r'<title>(.*?)<\/title>', flags=re.I | re.S)
 META_DESC_RE = re.compile(r'<meta[^>]+name=["\']description["\'][^>]*content=["\']([^"\']*)["\']', flags=re.I)
 P_TAG_RE = re.compile(r'<p>(.*?)<\/p>', flags=re.I | re.S)
@@ -100,48 +100,88 @@ def process_item(src_item: Path, meta: dict):
     images_dir = post_dir / "images"
     images_dir.mkdir(parents=True, exist_ok=True)
 
-    # find images and convert
-    img_matches = IMG_RE.findall(html)
-    replaced = html
-    for img_src in img_matches:
-        # ignore absolute urls
-        if img_src.startswith("http://") or img_src.startswith("https://") or img_src.startswith("//"):
-            continue
-        # resolve source image path relative to html file
-        src_img_path = (html_path.parent / img_src).resolve()
-        if not src_img_path.exists():
-            # try relative to src_item
-            alt = (src_item / img_src).resolve()
-            if alt.exists():
-                src_img_path = alt
-        if not src_img_path.exists():
-            print(f"Image not found: {img_src} (from {html_path}), skipping this image")
-            continue
-        dest_name = Path(img_src).stem + ".webp"
-        dest_img_path = images_dir / dest_name
-        convert_to_webp(src_img_path, dest_img_path)
-        # replace occurrences in html to use images/{dest_name}
-        # use simple replace for the specific src string
-        replaced = replaced.replace(img_src, f"images/{dest_name}")
+    # prepare media extension groups
+    image_exts = ('.png', '.jpg', '.jpeg', '.gif', '.svg', '.bmp', '.webp')
+    video_exts = ('.mp4', '.mov', '.m4v', '.webm', '.ogv')
+    audio_exts = ('.mp3', '.wav', '.aac', '.ogg', '.flac', '.m4a')
 
-    # write index.html
-    with (post_dir / "index.html").open("w", encoding="utf-8") as f:
+    # find media src attributes (img, source, video, audio)
+    media_matches = MEDIA_RE.findall(html)
+    replaced = html
+    for media_src in media_matches:
+        # ignore absolute urls
+        src = media_src
+        if src.startswith("http://") or src.startswith("https://") or src.startswith("//"):
+            continue
+        # resolve source path relative to html file
+        src_path = (html_path.parent / src).resolve()
+        if not src_path.exists():
+            alt = (src_item / src).resolve()
+            if alt.exists():
+                src_path = alt
+        if not src_path.exists():
+            print(f"Media not found: {src} (from {html_path}), skipping")
+            continue
+
+        ext = Path(src).suffix.lower()
+        # images: convert to webp
+        if ext in image_exts:
+            dest_name = Path(src).stem + ".webp"
+            dest_img_path = images_dir / dest_name
+            convert_to_webp(src_path, dest_img_path)
+            replaced = replaced.replace(src, f"images/{dest_name}")
+            continue
+
+        # videos: copy into videos/
+        if ext in video_exts:
+            videos_dir = post_dir / "videos"
+            videos_dir.mkdir(parents=True, exist_ok=True)
+            dest_name = Path(src).name
+            dest_video = videos_dir / dest_name
+            try:
+                shutil.copy2(src_path, dest_video)
+            except Exception as e:
+                print(f"Failed to copy video {src_path}: {e}")
+                continue
+            replaced = replaced.replace(src, f"videos/{dest_name}")
+            continue
+
+        # audio: copy into audio/
+        if ext in audio_exts:
+            audio_dir = post_dir / "audio"
+            audio_dir.mkdir(parents=True, exist_ok=True)
+            dest_name = Path(src).name
+            dest_audio = audio_dir / dest_name
+            try:
+                shutil.copy2(src_path, dest_audio)
+            except Exception as e:
+                print(f"Failed to copy audio {src_path}: {e}")
+                continue
+            replaced = replaced.replace(src, f"audio/{dest_name}")
+            continue
+
+    # write HTML using original source filename
+    dest_html_name = html_path.name
+    with (post_dir / dest_html_name).open("w", encoding="utf-8") as f:
         f.write(replaced)
 
     # copy other files (non-html assets) that are in the src_item folder (like css) if present
     for item in src_item.iterdir() if src_item.is_dir() else []:
         if item.is_file() and item.suffix.lower() != ".html":
-            if item.name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.svg', '.bmp', '.webp')):
-                # already handled images via HTML parsing; skip copying original images
+            # skip images, videos, and audio handled above
+            if item.name.lower().endswith(image_exts + video_exts + audio_exts):
                 continue
-            shutil.copy2(item, post_dir / item.name)
+            try:
+                shutil.copy2(item, post_dir / item.name)
+            except Exception as e:
+                print(f"Failed to copy asset {item}: {e}")
 
     post_meta = {
         "id": next_id,
         "title": title,
         "slug": make_slug(title) or str(next_id),
         "date": datetime.utcnow().isoformat() + "Z",
-        "path": f"data/BlogData/{next_id}/index.html",
+        "path": f"data/BlogData/{next_id}/{dest_html_name}",
         "summary": description or (first_p[:200] if first_p else ''),
         "tags": [],
         "published": True
