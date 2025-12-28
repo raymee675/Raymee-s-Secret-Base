@@ -19,7 +19,7 @@ BLOG_DIR = ROOT / "data" / "BlogData"
 META_FILE = BLOG_DIR / "posts.json"
 ARCHIVE_DIR = RAW_DIR / "processed"
 
-MEDIA_RE = re.compile(r'<(?:img|source|video|audio)[^>]+src=["\']([^"\']+)["\']', flags=re.I)
+MEDIA_RE = re.compile(r'<(?:img|source|video|audio)[^>]+src\s*=\s*["\']([^"\']+)["\']', flags=re.I)
 TITLE_RE = re.compile(r'<title>(.*?)<\/title>', flags=re.I | re.S)
 META_DESC_RE = re.compile(r'<meta[^>]+name=["\']description["\'][^>]*content=["\']([^"\']*)["\']', flags=re.I)
 P_TAG_RE = re.compile(r'<p>(.*?)<\/p>', flags=re.I | re.S)
