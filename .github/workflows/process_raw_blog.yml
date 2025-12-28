@@ -4,6 +4,9 @@ on:
   push:
     paths:
       - 'data/BlogData/RawData/**'
+ 
+permissions:
+  contents: write
 
 jobs:
   process:
