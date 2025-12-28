@@ -2,9 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const sidebar = document.getElementById("sidebar");
   const toggle = document.getElementById("sidebarToggle");
   const menuItems = document.querySelectorAll("#menuList .menu-item");
-  const contentArea = document.getElementById("contentArea");
 
-  if (!sidebar || !toggle || !contentArea) return;
+  if (!sidebar || !toggle) return;
 
   // restore collapsed state
   if (localStorage.getItem("sidebarCollapsed") === "true")
