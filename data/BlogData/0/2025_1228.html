@@ -3,6 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=desktop-width,initial-scale=1.0" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>レイミーの秘密基地</title>
@@ -17,23 +18,6 @@
   </head>
 
   <body>
-    <!--【修正】背景画像は Products フォルダ に BackGroundImage.拡張子 の形で保存すること-->
-    <img id="BackGroundImage" />
-
-    <!--【修正】タイトルイメージは Products フォルダ に Title.拡張子 の形で保存すること-->
-    <div id="loadPanel" class="loading">
-      <img src="" alt="" id="TitleImage" />
-    </div>
-
-    <!--ハンバーガーメニュー
-    <header style="z-index: 9000">
-      <div class="hamburger" id="hamburger" style="z-index: 10000">☰</div>
-      <nav class="mobile-menu" id="mobileMenu">
-        <ul id="mobileMenuList"></ul>
-      </nav>
-    </header>
-  -->
-
     <main>
       <div class="container layout">
         <aside id="sidebar" class="card">
@@ -47,36 +31,30 @@
                 ☰
               </button>
             </div>
+
+
             <ul class="menu" id="menuList">
-              <li class="menu-item" data-url="data/BlogData/Home/Home.html" data-content="ホームの概要を表示します。">
+              <li class="menu-item" data-content="ホームの概要を表示します。">
                 <span class="icon">🏠</span><span class="label">Home</span>
               </li>
               <li
                 class="menu-item"
-                data-url="#profile"
                 data-content="プロフィール情報を表示します。"
               >
                 <span class="icon">👤</span><span class="label">Profile</span>
               </li>
-              <li class="menu-item" data-url="#settings" data-content="設定を表示します。">
+              <li class="menu-item" data-content="設定を表示します。">
                 <span class="icon">⚙️</span><span class="label">Settings</span>
               </li>
-              <li class="menu-item" data-url="#notifications" data-content="お知らせを表示します。">
+              <li class="menu-item" data-content="お知らせを表示します。">
                 <span class="icon">🔔</span
                 ><span class="label">Notifications</span>
               </li>
             </ul>
+
+
           </div>
         </aside>
-
-        <section id="mainArea">
-          <div id="contentArea">
-            <p>
-              aaaaaaaaaaaa<br />bbbbbbbbbbbbb<br />ccccccccccccc<br />
-              ddddddddddddddd<br />eeeeeeeeeeeee<br />fffffffffffff<br />
-            </p>
-          </div>
-        </section>
       </div>
     </main>
     <div></div>

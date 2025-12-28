@@ -434,7 +434,7 @@ select:focus {
 
 /* Shift main content to make room for the fixed sidebar (prevents overlap) */
 #mainArea {
-  flex: 1;
+  width: 800px;
   margin-left: 260px;
   transition: margin-left var(--transition);
 }
@@ -447,15 +447,15 @@ select:focus {
 
 @media (max-width: 960px) {
   #sidebar {
-    display: none;
+    width: 72px;
+  }
+  #sidebar .collapsed {
+    width: 72px;
   }
   .layout {
     padding: 0;
   }
-}
-
-@media (max-width: 960px) {
   #mainArea {
-    margin-left: 0;
+    margin-left: 72px;
   }
 }

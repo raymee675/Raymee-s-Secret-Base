@@ -26,14 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
           el.classList.remove("active");
         });
       item.classList.add("active");
-      const content =
-        item.dataset.content || "Selected: " + item.textContent.trim();
-      contentArea.innerHTML =
-        '<div class="card"><div class="card-header"><div class="card-title">' +
-        item.textContent.trim() +
-        '</div></div><div class="card-sub">' +
-        content +
-        "</div></div>";
+      const url = item.dataset.url;
+      if (url) {
+        window.location.href = url;
+      }
     });
   });
 
