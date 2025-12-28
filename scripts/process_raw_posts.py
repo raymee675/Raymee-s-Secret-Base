@@ -22,6 +22,7 @@ ARCHIVE_DIR = RAW_DIR / "processed"
 MEDIA_RE = re.compile(r'<(?:img|source|video|audio)[^>]+src\s*=\s*["\']([^"\']+)["\']', flags=re.I)
 TITLE_RE = re.compile(r'<title>(.*?)<\/title>', flags=re.I | re.S)
 META_DESC_RE = re.compile(r'<meta[^>]+name=["\']description["\'][^>]*content=["\']([^"\']*)["\']', flags=re.I)
+META_TAGS_RE = re.compile(r'<meta[^>]+name=["\'](?:tags|tag)["\'][^>]*content=["\']([^"\']*)["\']', flags=re.I)
 P_TAG_RE = re.compile(r'<p>(.*?)<\/p>', flags=re.I | re.S)
 
 
@@ -92,6 +93,20 @@ def process_item(src_item: Path, meta: dict):
     title = extract_text(html, TITLE_RE) or html_path.stem
     description = extract_text(html, META_DESC_RE) or ''
     first_p = extract_text(html, P_TAG_RE) or ''
+
+    # extract tags from meta tags like <meta name="tags" content="tag1, tag2">
+    tags = []
+    for tag_content in META_TAGS_RE.findall(html):
+        if not tag_content:
+            continue
+        # prefer comma-separated, otherwise split on whitespace
+        if ',' in tag_content:
+            parts = [t.strip() for t in tag_content.split(',') if t.strip()]
+        else:
+            parts = [t.strip() for t in tag_content.split() if t.strip()]
+        for p in parts:
+            if p and p not in tags:
+                tags.append(p)
 
     next_id = (meta.get("lastId") or 0) + 1
     post_dir = BLOG_DIR / str(next_id)
@@ -187,7 +202,7 @@ def process_item(src_item: Path, meta: dict):
         "date": datetime.utcnow().isoformat() + "Z",
         "path": f"data/BlogData/{next_id}/{dest_html_name}",
         "summary": description or (first_p[:200] if first_p else ''),
-        "tags": [],
+        "tags": tags,
         "published": True
     }
 
