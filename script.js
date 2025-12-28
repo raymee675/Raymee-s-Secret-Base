@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Activate first menu item by default
+  // Activate first menu item by default (without clicking)
   const first = document.querySelector("#menuList .menu-item");
-  if (first) first.click();
+  if (first) first.classList.add("active");
 });
