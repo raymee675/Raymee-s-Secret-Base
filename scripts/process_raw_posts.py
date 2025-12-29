@@ -93,6 +93,10 @@ def process_item(src_item: Path, meta: dict):
     title = extract_text(html, TITLE_RE) or html_path.stem
     description = extract_text(html, META_DESC_RE) or ''
     first_p = extract_text(html, P_TAG_RE) or ''
+    # strip simple HTML tags from first paragraph for fallback summary
+    def _strip_tags(s: str) -> str:
+        return re.sub(r'<[^>]+>', '', s or '').strip()
+    summary = (description.strip() or _strip_tags(first_p))
 
     # extract tags from meta tags like <meta name="tags" content="0/1/3"> or "1,2" or whitespace-separated
     tags = []
@@ -200,6 +204,7 @@ def process_item(src_item: Path, meta: dict):
     post_meta = {
         "id": next_id,
         "title": title,
+        "summary": summary,
         "slug": make_slug(title) or str(next_id),
         "date": datetime.utcnow().isoformat() + "Z",
         "path": f"data/BlogData/{next_id}/{dest_html_name}",

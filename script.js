@@ -73,17 +73,34 @@ document.addEventListener("DOMContentLoaded", function () {
       const endIdx = startIdx + postsPerPage;
       const postsToShow = allPosts.slice(startIdx, endIdx);
       
-      const html = postsToShow
+        const html = postsToShow
         .map((p) => {
           const title = p.title || `Post ${p.id}`;
           const summary = p.summary || '';
           const href = p.path || (`data/BlogData/${p.id}/index.html`);
-          const tags = Array.isArray(p.tags) ? p.tags.join(' ') : '';
+
+          function formatDate(d) {
+            if (!d) return '';
+            try {
+              const dt = new Date(d);
+              if (isNaN(dt)) return d;
+              return dt.toLocaleString();
+            } catch (e) {
+              return d;
+            }
+          }
+
           return `
-            <article class="blog-item">
-              <h3 class="blog-item-title"><a href="${href}">${escapeHtml(title)}</a></h3>
-              <div class="blog-item-meta small muted">ID: ${p.id} ${tags ? ' | tags: ' + escapeHtml(tags) : ''}</div>
-              <p class="blog-item-summary">${escapeHtml(summary)}</p>
+            <article class="blog-item" style="display:flex;gap:16px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #eee;">
+              <div class="blog-item-title" style="flex:1;min-width:200px;">
+                <h3 style="margin:0;font-size:1.05em;"><a href="${href}">${escapeHtml(title)}</a></h3>
+              </div>
+              <div class="blog-item-summary" style="flex:2;color:var(--muted-color,#666);">
+                ${escapeHtml(summary)}
+              </div>
+              <div class="blog-item-date small muted" style="flex:0 0 180px;text-align:right;color:var(--muted-color,#666);">
+                ${escapeHtml(formatDate(p.date))}
+              </div>
             </article>
           `;
         })
