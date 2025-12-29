@@ -35,4 +35,52 @@ document.addEventListener("DOMContentLoaded", function () {
   // Activate first menu item by default (without clicking)
   const first = document.querySelector("#menuList .menu-item");
   if (first) first.classList.add("active");
+
+  // Fetch and render posts list
+  const blogListContainer = document.querySelector('.blog-list-items');
+  if (blogListContainer) {
+    fetch('data/BlogData/posts.json')
+      .then((res) => {
+        if (!res.ok) throw new Error('posts.json not found');
+        return res.json();
+      })
+      .then((meta) => {
+        const posts = meta.posts || [];
+        if (posts.length === 0) {
+          blogListContainer.innerHTML = '<div class="muted">投稿が見つかりません。</div>';
+          return;
+        }
+        // sort by id desc (newest first)
+        posts.sort((a, b) => (b.id || 0) - (a.id || 0));
+        const html = posts
+          .map((p) => {
+            const title = p.title || `Post ${p.id}`;
+            const summary = p.summary || '';
+            const href = p.path || (`data/BlogData/${p.id}/index.html`);
+            const tags = Array.isArray(p.tags) ? p.tags.join(' ') : '';
+            return `
+              <article class="blog-item">
+                <h3 class="blog-item-title"><a href="${href}">${escapeHtml(title)}</a></h3>
+                <div class="blog-item-meta small muted">ID: ${p.id} ${tags ? ' | tags: ' + escapeHtml(tags) : ''}</div>
+                <p class="blog-item-summary">${escapeHtml(summary)}</p>
+              </article>
+            `;
+          })
+          .join('\n');
+        blogListContainer.innerHTML = html;
+      })
+      .catch((err) => {
+        blogListContainer.innerHTML = '<div class="muted">投稿一覧を読み込めませんでした。</div>';
+        console.error(err);
+      });
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;')
+      .replace(/\'/g, '&#39;');
+  }
 });

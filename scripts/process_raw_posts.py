@@ -94,19 +94,21 @@ def process_item(src_item: Path, meta: dict):
     description = extract_text(html, META_DESC_RE) or ''
     first_p = extract_text(html, P_TAG_RE) or ''
 
-    # extract tags from meta tags like <meta name="tags" content="tag1, tag2">
+    # extract tags from meta tags like <meta name="tags" content="0/1/3"> or "1,2" or whitespace-separated
     tags = []
     for tag_content in META_TAGS_RE.findall(html):
         if not tag_content:
             continue
-        # prefer comma-separated, otherwise split on whitespace
-        if ',' in tag_content:
-            parts = [t.strip() for t in tag_content.split(',') if t.strip()]
-        else:
-            parts = [t.strip() for t in tag_content.split() if t.strip()]
+        # split on slash, comma, or whitespace
+        parts = [t.strip() for t in re.split(r"[/,\\s]+", tag_content) if t.strip()]
         for p in parts:
-            if p and p not in tags:
-                tags.append(p)
+            try:
+                iv = int(p)
+            except Exception:
+                # ignore non-integer tags
+                continue
+            if iv not in tags:
+                tags.append(iv)
 
     next_id = (meta.get("lastId") or 0) + 1
     post_dir = BLOG_DIR / str(next_id)
@@ -201,7 +203,6 @@ def process_item(src_item: Path, meta: dict):
         "slug": make_slug(title) or str(next_id),
         "date": datetime.utcnow().isoformat() + "Z",
         "path": f"data/BlogData/{next_id}/{dest_html_name}",
-        "summary": description or (first_p[:200] if first_p else ''),
         "tags": tags,
         "published": True
     }
