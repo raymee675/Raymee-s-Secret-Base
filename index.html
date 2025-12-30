@@ -10,27 +10,9 @@
     <title>レイミーの秘密基地</title>
     <meta name="description" content="絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。知的好奇心と時間が有り余っている方にぜひ読んでいただきたいです。" />
     <meta name="keywords" content="レイミーの秘密基地" />
-    
-    <script>
-      (function () {
-        var useLocal = false;
-        try {
-          useLocal = (location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
-        } catch (e) {
-          useLocal = false;
-        }
-        var baseCdn = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest';
-        var link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = useLocal ? 'style.css' : (baseCdn + '/style.css');
-        document.head.appendChild(link);
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/style.css" />
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
 
-        var icon = document.createElement('link');
-        icon.rel = 'icon';
-        icon.href = useLocal ? 'data/Resources/favicon.png' : (baseCdn + '/data/Resources/favicon.png');
-        document.head.appendChild(icon);
-      })();
-    </script>
   </head>
 
   <body>
@@ -93,21 +75,7 @@
         </section>
       </div>
     </main>
-    <script>
-      (function () {
-        var localScript = 'script.js';
-        var cdnScript = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js';
-        var useLocal = false;
-        try {
-          useLocal = (location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
-        } catch (e) {
-          useLocal = false;
-        }
-        var s = document.createElement('script');
-        s.src = useLocal ? localScript : cdnScript;
-        s.defer = true;
-        document.body.appendChild(s);
-      })();
+    <script src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js">
     </script>
   </body>
 </html>

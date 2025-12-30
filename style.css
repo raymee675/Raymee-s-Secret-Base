@@ -468,12 +468,14 @@ select:focus {
 }
 
 /* Shift main content to make room for the fixed sidebar (prevents overlap) */
+/* Main content area: keep fixed available width regardless of sidebar state */
 #mainArea {
-  width: 1400px;
-  /* keep a fixed left margin equal to the sidebar's max width so
-     toggling the sidebar (collapsed/expanded) does not resize or
-     shift the main content */
+  /* Use full available width but reserve left space for the sidebar */
+  box-sizing: border-box;
+  max-width: var(--container-max);
+  width: calc(100% - 260px);
   margin-left: 260px;
+  transition: none; /* prevent layout transitions when sidebar toggles */
 }
 
 @media (max-width: 960px) {
