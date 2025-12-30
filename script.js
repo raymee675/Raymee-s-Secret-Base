@@ -46,25 +46,57 @@ document.addEventListener("DOMContentLoaded", function () {
     let currentPage = 0;
     const postsPerPage = 20;
 
-    fetch('data/BlogData/posts.json')
-      .then((res) => {
-        if (!res.ok) throw new Error('posts.json not found');
+    // Try loading posts.json from local first, but when running as file://
+    // prefer CDN. If the primary source fails, fall back to the alternative.
+    const localPostsPath = 'data/BlogData/posts.json';
+    const cdnBase = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest';
+    const cdnPostsPath = `${cdnBase}/data/BlogData/posts.json`;
+
+    // If opened via file://, prefer CDN to avoid local path issues in some setups
+    let primaryUrl = localPostsPath;
+    let fallbackUrl = cdnPostsPath;
+    try {
+      if (location && location.protocol === 'file:') {
+        primaryUrl = cdnPostsPath;
+        fallbackUrl = localPostsPath;
+      }
+    } catch (e) {
+      // ignore (e.g., worker context)
+    }
+
+    function fetchJson(url) {
+      return fetch(url, { cache: 'no-store' }).then((res) => {
+        if (!res.ok) throw new Error(`fetch failed: ${url} (${res.status})`);
         return res.json();
+      });
+    }
+
+    fetchJson(primaryUrl)
+      .catch((err) => {
+        // Try fallback if primary failed
+        console.warn('Primary posts.json fetch failed, trying fallback:', primaryUrl, err);
+        if (fallbackUrl && fallbackUrl !== primaryUrl) return fetchJson(fallbackUrl);
+        throw err;
       })
       .then((meta) => {
-        allPosts = meta.posts || [];
+        allPosts = (meta && meta.posts) || [];
         if (allPosts.length === 0) {
           blogListContainer.innerHTML = '<div class="muted">投稿が見つかりません。</div>';
           return;
         }
         // sort by id desc (newest first)
         allPosts.sort((a, b) => (b.id || 0) - (a.id || 0));
-        
+
         // Initial render of first page
         renderPage(0);
       })
       .catch((err) => {
-        blogListContainer.innerHTML = '<div class="muted">投稿一覧を読み込めませんでした。</div>';
+        const msg = document.createElement('div');
+        msg.className = 'muted';
+        msg.style.whiteSpace = 'pre-wrap';
+        msg.textContent = '投稿一覧を読み込めませんでした。\n参照したURL:\n' + primaryUrl + (fallbackUrl && fallbackUrl !== primaryUrl ? '\n' + fallbackUrl : '') + '\n\n詳細: ' + (err && err.message ? err.message : String(err));
+        blogListContainer.innerHTML = '';
+        blogListContainer.appendChild(msg);
         console.error(err);
       });
 
