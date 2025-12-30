@@ -84,21 +84,27 @@ document.addEventListener("DOMContentLoaded", function () {
             try {
               const dt = new Date(d);
               if (isNaN(dt)) return d;
-              return dt.toLocaleString();
+              const year = dt.getFullYear();
+              const month = String(dt.getMonth() + 1).padStart(2, '0');
+              const day = String(dt.getDate()).padStart(2, '0');
+              return `${year}/${month}/${day}`;
             } catch (e) {
               return d;
             }
           }
 
           return `
-            <article class="blog-item" style="display:flex;gap:16px;align-items:flex-start;padding:12px 0;border-bottom:1px solid #eee;">
-              <div class="blog-item-title" style="flex:1;min-width:200px;">
-                <h3 style="margin:0;font-size:1.05em;"><a href="${href}">${escapeHtml(title)}</a></h3>
+            <article class="blog-item" style="padding:12px 0;border-bottom:1px solid #eee;">
+              <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:4px;">
+                <div class="blog-item-title" style="flex:0 0 auto;">
+                  <h3 style="margin:0;font-size:1.05em;"><a href="${href}">${escapeHtml(title)}</a></h3>
+                </div>
+                <div style="flex:1;color:var(--muted-color,#666);text-align:right;">
+                  ${escapeHtml(summary)}
+                </div>
               </div>
-              <div class="blog-item-summary" style="flex:2;color:var(--muted-color,#666);">
-                ${escapeHtml(summary)}
-              </div>
-              <div class="blog-item-date small muted" style="flex:0 0 180px;text-align:right;color:var(--muted-color,#666);">
+              <div class="blog-item-separator" style="border-top:1px solid #ccc;margin:4px 0;"></div>
+              <div class="blog-item-date small muted" style="color:var(--muted-color,#666);font-size:0.9em;">
                 ${escapeHtml(formatDate(p.date))}
               </div>
             </article>
