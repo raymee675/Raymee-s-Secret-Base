@@ -1,0 +1,12 @@
+theme: jekyll-theme-minimal
+exclude:
+  - scripts/
+
+# キャッシュ制御設定
+future: false
+keep_files:
+  - style.css
+  - script.js
+  - index.html
+  - template.html
+  - data
