@@ -115,26 +115,26 @@
         </section>
       </div>
     </main>
-    <!-- Load main script from CDN first; fall back to local if blocked/failed. -->
+    <!-- Load main script: try local first, fall back to CDN if local fails. -->
     <script>
       (function () {
-        var cdn = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js';
         var local = 'script.js';
+        var cdn = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js';
 
         function loadScript(src, onload, onerror) {
           var s = document.createElement('script');
           s.src = src;
           s.defer = true;
-          s.onload = onload || function () {};
-          s.onerror = onerror || function () {};
+          if (onload) s.onload = onload;
+          if (onerror) s.onerror = onerror;
           document.body.appendChild(s);
           return s;
         }
 
-        var s = loadScript(cdn, function () {}, function () {
-          // If CDN script fails (including Tracking Prevention), load local copy
-          try { document.body.removeChild(s); } catch (e) {}
-          loadScript(local);
+        // Load local first; if it errors (blocked/missing), try CDN.
+        var sLocal = loadScript(local, null, function () {
+          try { document.body.removeChild(sLocal); } catch (e) {}
+          loadScript(cdn);
         });
       })();
     </script>
