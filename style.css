@@ -32,7 +32,7 @@ body {
 }
 body {
   margin: 0;
-  min-height: 100%;
+  min-height: 100vh;
   background: radial-gradient(
       1200px 600px at 10% 10%,
       rgba(225, 27, 34, 0.06),
@@ -49,6 +49,7 @@ body {
       var(--bg-800) 60%,
       var(--surface) 100%
     );
+  background-attachment: fixed;
   color: var(--text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -465,14 +466,10 @@ select:focus {
 /* Shift main content to make room for the fixed sidebar (prevents overlap) */
 #mainArea {
   width: 1400px;
-  margin-left: 200px;
-  transition: margin-left var(--transition);
-}
-
-/* When sidebar is collapsed reduce left gap */
-#sidebar.collapsed + #mainArea,
-#sidebar.collapsed ~ #mainArea {
-  margin-left: 72px;
+  /* keep a fixed left margin equal to the sidebar's max width so
+     toggling the sidebar (collapsed/expanded) does not resize or
+     shift the main content */
+  margin-left: 260px;
 }
 
 @media (max-width: 960px) {
