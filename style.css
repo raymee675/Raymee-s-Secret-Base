@@ -260,8 +260,11 @@ select:focus {
   color: var(--text);
 }
 .card-sub {
+  font-size: 1.05rem;
+  font-weight: 500;
   color: var(--muted);
-  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
 }
 
 /* Divider */
