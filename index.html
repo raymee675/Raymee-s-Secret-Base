@@ -11,8 +11,26 @@
     <meta name="description" content="絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。知的好奇心と時間が有り余っている方にぜひ読んでいただきたいです。" />
     <meta name="keywords" content="レイミーの秘密基地" />
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/style.css" />
-    <link rel="icon" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
+    <script>
+      (function () {
+        var useLocal = false;
+        try {
+          useLocal = (location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1');
+        } catch (e) {
+          useLocal = false;
+        }
+        var baseCdn = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest';
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = useLocal ? 'style.css' : (baseCdn + '/style.css');
+        document.head.appendChild(link);
+
+        var icon = document.createElement('link');
+        icon.rel = 'icon';
+        icon.href = useLocal ? 'data/Resources/favicon.png' : (baseCdn + '/data/Resources/favicon.png');
+        document.head.appendChild(icon);
+      })();
+    </script>
   </head>
 
   <body>
