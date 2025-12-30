@@ -12,7 +12,47 @@
     <meta name="keywords" content="レイミーの秘密基地" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/style.css" />
     <link rel="icon" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
+    <!-- Load stylesheet and favicon from CDN first; if blocked (Tracking Prevention)
+         or failing to load, fall back to local copies. Meta tags above are preserved. -->
+    <script>
+      (function () {
+        var cdnBase = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest';
+        var cdnCss = cdnBase + '/style.css';
+        var localCss = 'style.css';
 
+        function loadCss(href) {
+          var l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = href;
+          document.head.appendChild(l);
+          return l;
+        }
+
+        // Try CDN first, then fallback to local on error
+        var cssLink = loadCss(cdnCss);
+        cssLink.onerror = function () {
+          // Remove the failed CDN link then load local
+          try { document.head.removeChild(cssLink); } catch (e) {}
+          loadCss(localCss);
+        };
+
+        // Favicon: similar approach
+        var cdnFavicon = cdnBase + '/data/Resources/favicon.png';
+        var localFavicon = 'data/Resources/favicon.png';
+        function loadIcon(href) {
+          var i = document.createElement('link');
+          i.rel = 'icon';
+          i.href = href;
+          document.head.appendChild(i);
+          return i;
+        }
+        var iconLink = loadIcon(cdnFavicon);
+        iconLink.onerror = function () {
+          try { document.head.removeChild(iconLink); } catch (e) {}
+          loadIcon(localFavicon);
+        };
+      })();
+    </script>
   </head>
 
   <body>
@@ -75,7 +115,28 @@
         </section>
       </div>
     </main>
-    <script src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js">
+    <!-- Load main script from CDN first; fall back to local if blocked/failed. -->
+    <script>
+      (function () {
+        var cdn = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js';
+        var local = 'script.js';
+
+        function loadScript(src, onload, onerror) {
+          var s = document.createElement('script');
+          s.src = src;
+          s.defer = true;
+          s.onload = onload || function () {};
+          s.onerror = onerror || function () {};
+          document.body.appendChild(s);
+          return s;
+        }
+
+        var s = loadScript(cdn, function () {}, function () {
+          // If CDN script fails (including Tracking Prevention), load local copy
+          try { document.body.removeChild(s); } catch (e) {}
+          loadScript(local);
+        });
+      })();
     </script>
   </body>
 </html>
