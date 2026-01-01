@@ -5,16 +5,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!sidebar || !toggle) return;
 
-  // restore collapsed state
-  if (localStorage.getItem("sidebarCollapsed") === "true")
-    sidebar.classList.add("collapsed");
+  // restore collapsed state (guard against storage being blocked by tracking prevention)
+  const sidebarStorageKey = "sidebarCollapsed";
+  try {
+    if (localStorage.getItem(sidebarStorageKey) === "true") {
+      sidebar.classList.add("collapsed");
+    }
+  } catch (e) {
+    // ignore storage access errors
+  }
 
   toggle.addEventListener("click", function () {
     sidebar.classList.toggle("collapsed");
-    localStorage.setItem(
-      "sidebarCollapsed",
-      sidebar.classList.contains("collapsed")
-    );
+    try {
+      localStorage.setItem(
+        sidebarStorageKey,
+        sidebar.classList.contains("collapsed")
+      );
+    } catch (e) {
+      // ignore storage access errors
+    }
   });
 
   menuItems.forEach(function (item) {
@@ -48,21 +58,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Try loading posts.json from local first, but when running as file://
     // prefer CDN. If the primary source fails, fall back to the alternative.
-    const localPostsPath = 'data/BlogData/posts.json';
     const cdnBase = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest';
     const cdnPostsPath = `${cdnBase}/data/BlogData/posts.json`;
 
     // If opened via file://, prefer CDN to avoid local path issues in some setups
-    let primaryUrl = localPostsPath;
-    let fallbackUrl = cdnPostsPath;
-    try {
-      if (location && location.protocol === 'file:') {
-        primaryUrl = cdnPostsPath;
-        fallbackUrl = localPostsPath;
-      }
-    } catch (e) {
-      // ignore (e.g., worker context)
-    }
+    let primaryUrl = cdnPostsPath;
 
     function fetchJson(url) {
       return fetch(url, { cache: 'no-store' }).then((res) => {
@@ -73,9 +73,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     fetchJson(primaryUrl)
       .catch((err) => {
-        // Try fallback if primary failed
-        console.warn('Primary posts.json fetch failed, trying fallback:', primaryUrl, err);
-        if (fallbackUrl && fallbackUrl !== primaryUrl) return fetchJson(fallbackUrl);
         throw err;
       })
       .then((meta) => {
