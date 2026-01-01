@@ -12,49 +12,6 @@
     <meta name="keywords" content="レイミーの秘密基地" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
-    <!-- Load stylesheet and favicon from CDN first; if blocked (Tracking Prevention)
-         or failing to load, fall back to local copies. Meta tags above are preserved. -->
-    <script src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js">
-      /*
-      (function () {
-        var cdnBase = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest';
-        var cdnCss = cdnBase + '/style.css';
-        var localCss = 'style.css';
-
-        function loadCss(href) {
-          var l = document.createElement('link');
-          l.rel = 'stylesheet';
-          l.href = href;
-          document.head.appendChild(l);
-          return l;
-        }
-
-        // Try CDN first, then fallback to local on error
-        var cssLink = loadCss(cdnCss);
-        cssLink.onerror = function () {
-          // Remove the failed CDN link then load local
-          try { document.head.removeChild(cssLink); } catch (e) {}
-          loadCss(localCss);
-        };
-
-        // Favicon: similar approach
-        var cdnFavicon = cdnBase + '/data/Resources/favicon.png';
-        var localFavicon = 'data/Resources/favicon.png';
-        function loadIcon(href) {
-          var i = document.createElement('link');
-          i.rel = 'icon';
-          i.href = href;
-          document.head.appendChild(i);
-          return i;
-        }
-        var iconLink = loadIcon(cdnFavicon);
-        iconLink.onerror = function () {
-          try { document.head.removeChild(iconLink); } catch (e) {}
-          loadIcon(localFavicon);
-        };
-      })();
-      */
-    </script>
   </head>
 
   <body>
@@ -97,13 +54,24 @@
                 絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。<br>
                 知的好奇心と時間が有り余っている方にぜひ<br>
                 Twitter に上げた絵とか、DTM で作った曲とかの創作作品を気まぐれで投稿します。<br>
+                たまにプログラミング関係の記事も書きます。<br>
+                どうぞごゆるりとお楽しみくださいませ。
             </div>
 
-            <br>
+            <div style="width: 150px; height: 150px; display: block; margin: 20px auto; border-radius: 50%;">
+              <img src="data/Resources/MyIcon.png" alt="My Icon"style="width: 150px; height: 150px; display: block; margin: 20px auto; border-radius: 50%;"/>
+              <p>
+                作者: レイミー (Raymeela)<br>
+                Twitter: <a href="https://twitter.com/raymeela675" target="_blank" rel="noopener noreferrer">@raymee675</a><br>
+                GitHub: <a href="https://github.com/raymee675" target="_blank" rel="noopener noreferrer">raymee675</a>
+              </p>
+            </div>
+
+            <br><br><br><br><br><br>
 
             <div id="BlogList" class="card blog-list">
               <div class="card-header">
-                <div class="card-title">Blog Posts</div>
+                <div class="card-title">最新記事はこちら</div>
               </div>
               <div class="blog-list-items" aria-live="polite">
                 <!-- posts.json を読み込んでここに一覧を挿入します -->
@@ -117,28 +85,6 @@
         </section>
       </div>
     </main>
-    <!-- Load main script: try local first, fall back to CDN if local fails. -->
-    <script>
-      (function () {
-        var local = 'script.js';
-        var cdn = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js';
-
-        function loadScript(src, onload, onerror) {
-          var s = document.createElement('script');
-          s.src = src;
-          s.defer = true;
-          if (onload) s.onload = onload;
-          if (onerror) s.onerror = onerror;
-          document.body.appendChild(s);
-          return s;
-        }
-
-        // Load local first; if it errors (blocked/missing), try CDN.
-        var sLocal = loadScript(local, null, function () {
-          try { document.body.removeChild(sLocal); } catch (e) {}
-          loadScript(cdn);
-        });
-      })();
-    </script>
+    <script src="script.js?v=1.0.0"></script>
   </body>
 </html>

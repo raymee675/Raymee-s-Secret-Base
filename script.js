@@ -123,20 +123,22 @@ document.addEventListener("DOMContentLoaded", function () {
           }
 
           return `
-            <article class="blog-item" style="padding:16px;border-bottom:1px solid #eee;margin-bottom:12px;background:rgba(255,255,255,0.02);border-radius:8px;">
-              <div style="margin-bottom:8px;">
-                <div class="blog-item-title">
-                  <h3 style="margin:0;font-size:1.05em;"><a href="${href}">${escapeHtml(title)}</a></h3>
+            <article class="blog-item">
+              <div class="blog-item-layout">
+                <div class="blog-item-left">
+                  <div class="blog-item-title">
+                    <h3><a href="${href}">${escapeHtml(title)}</a></h3>
+                  </div>
+                  <div class="blog-item-date">
+                    ${escapeHtml(formatDate(p.date))}
+                  </div>
                 </div>
-              </div>
-              <div class="blog-item-separator" style="border-top:1px solid #555;margin:8px 0;"></div>
-              <div style="display:flex;gap:16px;align-items:flex-start;margin-bottom:8px;">
-                <div class="blog-item-summary" style="flex:1;color:var(--muted-color,#999);">
-                  ${escapeHtml(summary)}
+                <div class="blog-item-separator"></div>
+                <div class="blog-item-right">
+                  <div class="blog-item-summary">
+                    ${escapeHtml(summary)}
+                  </div>
                 </div>
-              </div>
-              <div class="blog-item-date small muted" style="color:var(--muted-color,#999);font-size:0.9em;">
-                ${escapeHtml(formatDate(p.date))}
               </div>
             </article>
           `;
