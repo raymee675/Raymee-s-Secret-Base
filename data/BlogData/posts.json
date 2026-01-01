@@ -3,38 +3,38 @@
   "posts": [
     {
       "id": 1,
-      "title": "レイミーの秘密基地",
+      "title": "レイミーの秘密基地012",
       "slug": "1",
       "date": "2025-12-28T14:52:31.773787Z",
       "path": "data/BlogData/1/index.html",
-      "tags": [],
+      "tags": [0,1,2],
       "published": true
     },
     {
       "id": 2,
-      "title": "レイミーの秘密基地",
+      "title": "レイミーの秘密基地046",
       "slug": "2",
       "date": "2025-12-28T15:10:46.105279Z",
       "path": "data/BlogData/2/n.html",
-      "tags": [],
+      "tags": [0,4,6],
       "published": true
     },
     {
       "id": 3,
-      "title": "レイミーの秘密基地",
+      "title": "レイミーの秘密基地23",
       "slug": "3",
       "date": "2025-12-28T15:18:10.455705Z",
       "path": "data/BlogData/3/n.html",
-      "tags": [],
+      "tags": [2,3],
       "published": true
     },
     {
       "id": 4,
-      "title": "レイミーの秘密基地",
+      "title": "レイミーの秘密基地12345",
       "slug": "4",
       "date": "2025-12-28T15:22:26.268695Z",
       "path": "data/BlogData/4/n.html",
-      "tags": [],
+      "tags": [1,2,3,4,5],
       "summary": "絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。知的好奇心と時間が有り余っている方にぜひTwitter に上げた絵とか、DTM で作った曲とかの創作作品を気まぐれで投稿します。",
       "published": true
     }

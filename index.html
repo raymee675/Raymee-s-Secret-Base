@@ -33,7 +33,7 @@
                 <span class="icon"><img src="data/Resources/Home.png" alt="Home" style="width: 20px; height: 20px;" /></span><span class="label">Home</span>
               </li>
 
-              <li class="menu-item" data-url="data/BlogData/Rules/Rules.html" data-content="ルール">
+              <li class="menu-item" data-url="data/BlogData/Rules/rules.html" data-content="ルール">
                 <span class="icon"><img src="data/Resources/Rules.png" alt="Rules" style="width: 20px; height: 20px;" /></span><span class="label">Rules</span>
               </li>
 
@@ -72,6 +72,11 @@
             <div id="BlogList" class="card blog-list">
               <div class="card-header">
                 <div class="card-title">最新記事はこちら</div>
+              </div>
+              <!-- Tag filter tabs -->
+              <div class="tag-filter-tabs">
+                <button class="tag-tab active" data-tag="all">すべて</button>
+                <!-- Additional tag buttons will be dynamically added here -->
               </div>
               <div class="blog-list-items" aria-live="polite">
                 <!-- posts.json を読み込んでここに一覧を挿入します -->

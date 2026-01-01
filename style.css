@@ -558,3 +558,52 @@ select:focus {
     margin-left: 72px;
   }
 }
+
+/* Tag filter tabs */
+.tag-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 16px;
+}
+
+.tag-tab {
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: inherit;
+}
+
+.tag-tab:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.tag-tab.active {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: var(--text);
+  border-color: var(--accent);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(225, 27, 34, 0.3);
+}
+
+@media (max-width: 640px) {
+  .tag-filter-tabs {
+    padding: 12px;
+    gap: 6px;
+  }
+  
+  .tag-tab {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
