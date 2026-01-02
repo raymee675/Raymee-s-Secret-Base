@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Try loading posts.json from local first, but when running as file://
     // prefer CDN. If the primary source fails, fall back to the alternative.
-    const cdnBase = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@beta';
+    const cdnBase = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest';
     const cdnPostsPath = `${cdnBase}/data/BlogData/posts.json`;
     const cdnCategoryPath = `${cdnBase}/data/Category.json`;
 
