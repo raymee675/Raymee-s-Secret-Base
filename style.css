@@ -607,3 +607,10 @@ select:focus {
     font-size: 0.8rem;
   }
 }
+
+/* Content area width */
+#contentArea {
+  width: 840px;
+  max-width: 100%;
+  margin: 0 auto;
+}

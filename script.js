@@ -57,15 +57,18 @@ document.addEventListener("DOMContentLoaded", function () {
     let filteredPosts = [];
     let currentPage = 0;
     let selectedTag = 'all';
+    let categories = {}; // Store category id -> name mapping
     const postsPerPage = 20;
 
     // Try loading posts.json from local first, but when running as file://
     // prefer CDN. If the primary source fails, fall back to the alternative.
     const cdnBase = 'https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest';
     const cdnPostsPath = `${cdnBase}/data/BlogData/posts.json`;
+    const cdnCategoryPath = `${cdnBase}/data/Category.json`;
 
     // If opened via file://, prefer CDN to avoid local path issues in some setups
     let primaryUrl = cdnPostsPath;
+    let categoryUrl = cdnCategoryPath;
 
     function fetchJson(url) {
       return fetch(url, { cache: 'no-store' }).then((res) => {
@@ -74,9 +77,18 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
 
-    fetchJson(primaryUrl)
-      .catch((err) => {
-        throw err;
+    // Load categories first, then posts
+    fetchJson(categoryUrl)
+      .then((categoryData) => {
+        // Build category mapping
+        if (categoryData && categoryData.category && Array.isArray(categoryData.category)) {
+          categoryData.category.forEach((cat) => {
+            categories[cat.id] = cat.name;
+          });
+        }
+        
+        // Now load posts
+        return fetchJson(primaryUrl);
       })
       .then((meta) => {
         allPosts = (meta && meta.posts) || [];
@@ -117,12 +129,13 @@ document.addEventListener("DOMContentLoaded", function () {
       // Sort tags numerically
       const sortedTags = Array.from(allTags).sort((a, b) => a - b);
       
-      // Create tag buttons
+      // Create tag buttons with category names
       sortedTags.forEach((tag) => {
         const button = document.createElement('button');
         button.className = 'tag-tab';
         button.dataset.tag = tag;
-        button.textContent = `タグ ${tag}`;
+        // Use category name from categories mapping, fallback to "タグ X"
+        button.textContent = categories[tag] || `タグ ${tag}`;
         button.addEventListener('click', () => applyTagFilter(tag));
         tagFilterContainer.appendChild(button);
       });
