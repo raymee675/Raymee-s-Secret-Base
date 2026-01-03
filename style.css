@@ -17,8 +17,7 @@
   --transition: 180ms cubic-bezier(0.2, 0.9, 0.3, 1);
   --container-max: 1100px;
   color-scheme: dark;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial;
+  font-family: "Noto Serif JP", serif, ui-serif, Georgia, "Times New Roman", Times;
   line-height: 1.45;
 }
 
@@ -255,9 +254,26 @@ select:focus {
   margin-bottom: 12px;
 }
 .card-title {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: var(--text);
+  padding-left: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.card-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 80%;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(225, 27, 34, 0.3);
 }
 .card-sub {
   font-size: 1.05rem;
@@ -265,6 +281,116 @@ select:focus {
   color: var(--muted);
   line-height: 1.6;
   margin-bottom: 16px;
+  font-family: "Meiryo", "メイリオ", sans-serif;
+}
+
+/* Card content - for blog topic sections */
+.card-content {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.card-content:first-of-type {
+  margin-top: 24px;
+  padding-top: 0;
+  border-top: none;
+}
+
+.card-content .topic-text {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 16px 0;
+  padding-left: 20px;
+  line-height: 1.3;
+  position: relative;
+}
+
+.card-content .topic-text::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  border-radius: 3px;
+  box-shadow: 0 2px 8px rgba(225, 27, 34, 0.3);
+}
+
+.card-content .content-text {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.8;
+  margin: 0;
+  font-family: "Meiryo", "メイリオ", sans-serif;
+}
+
+.card-content .content-text p {
+  margin: 0 0 16px 0;
+}
+
+.card-content .content-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Code blocks in content */
+.card-content .content-text pre {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.card-content .content-text code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9em;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.card-content .content-text pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Lists in content */
+.card-content .content-text ul,
+.card-content .content-text ol {
+  margin: 12px 0;
+  padding-left: 24px;
+}
+
+.card-content .content-text li {
+  margin: 8px 0;
+  color: var(--muted);
+}
+
+/* Links in content */
+.card-content .content-text a {
+  color: var(--accent-2);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 75, 74, 0.3);
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.card-content .content-text a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* Images in content */
+.card-content .content-text img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 16px 0;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 /* Divider */
@@ -390,6 +516,7 @@ select:focus {
   color: var(--muted);
   margin: 0;
   line-height: 1.6;
+  font-family: "Meiryo", "メイリオ", sans-serif;
 }
 
 /* レスポンシブ対応: 小さい画面では縦並びに */
@@ -579,7 +706,7 @@ select:focus {
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition);
-  font-family: inherit;
+  font-family: "Meiryo", "メイリオ", sans-serif;
 }
 
 .tag-tab:hover {

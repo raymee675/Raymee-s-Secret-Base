@@ -23,6 +23,7 @@ MEDIA_RE = re.compile(r'<(?:img|source|video|audio)[^>]+src\s*=\s*["\']([^"\']+)
 TITLE_RE = re.compile(r'<title>(.*?)<\/title>', flags=re.I | re.S)
 META_DESC_RE = re.compile(r'<meta[^>]+name=["\']description["\'][^>]*content=["\']([^"\']*)["\']', flags=re.I)
 META_TAGS_RE = re.compile(r'<meta[^>]+name=["\'](?:tags|tag)["\'][^>]*content=["\']([^"\']*)["\']', flags=re.I)
+META_OG_URL_RE = re.compile(r'<meta\s+property=["\']og:url["\']\s+content=["\']([^"\']*)["\'][^>]*>', flags=re.I)
 P_TAG_RE = re.compile(r'<p>(.*?)<\/p>', flags=re.I | re.S)
 
 
@@ -184,6 +185,24 @@ def process_item(src_item: Path, meta: dict):
         return original
 
     replaced = MEDIA_RE.sub(_replace_src, html)
+
+    # Update og:url meta tag with the blog's URL
+    blog_url = f"https://raymee675.github.io/Raymee-s-Secret-Base/data/BlogData/{next_id}/{dest_html_name}"
+    
+    def _replace_og_url(match):
+        return f'<meta property="og:url" content="{blog_url}">'
+    
+    # Check if og:url meta tag exists
+    if META_OG_URL_RE.search(replaced):
+        # Replace existing og:url
+        replaced = META_OG_URL_RE.sub(_replace_og_url, replaced)
+    else:
+        # Add og:url meta tag if not present (insert after <head> tag)
+        head_tag = re.search(r'<head[^>]*>', replaced, flags=re.I)
+        if head_tag:
+            insert_pos = head_tag.end()
+            og_meta = f'\n    <meta property="og:url" content="{blog_url}">'
+            replaced = replaced[:insert_pos] + og_meta + replaced[insert_pos:]
 
     # write HTML using original source filename
     dest_html_name = html_path.name
