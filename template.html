@@ -1,93 +1,80 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
 
-    <title>レイミーの秘密基地</title>
-    <meta name="description" content="絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。知的好奇心と時間が有り余っている方にぜひ読んでいただきたいです。" />
-    <meta name="keywords" content="レイミーの秘密基地" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/style.css" />
-    <link rel="icon" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
-  <body>
-    <main>
-      <div class="container layout">
-        <aside id="sidebar" class="card">
-          <div class="sidebar-inner">
-            <div class="sidebar-header">
-              <button
-                id="sidebarToggle"
-                class="btn btn-ghost"
-                aria-label="Toggle menu"
-              >
-                ☰
-              </button>
-            </div>
-            <ul class="menu" id="menuList">
-              <li class="menu-item" data-url="index.html" data-content="ホーム">
-                <span class="icon"><img src="data/Resources/Home.png" alt="Home" style="width: 20px; height: 20px;" /></span><span class="label">Home</span>
-              </li>
+  <title>レイミーの秘密基地</title>
+  <meta name="description" content="絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。知的好奇心と時間が有り余っている方にぜひ読んでいただきたいです。" />
+  <meta name="keywords" content="レイミーの秘密基地" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700;900&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon"
+    href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
+</head>
 
-              <li class="menu-item" data-url="data/BlogData/Rules/Rules.html" data-content="ルール">
-                <span class="icon"><img src="data/Resources/Rules.png" alt="Rules" style="width: 20px; height: 20px;" /></span><span class="label">Rules</span>
-              </li>
-
-              <li class="menu-item" data-url="template.html" data-content="ドキュメント">
-                <span class="icon"><img src="data/Resources/Documents.png" alt="Documents" style="width: 20px; height: 20px;" /></span><span class="label">Documents</span>
-              </li>
-            </ul>
+<body>
+  <main>
+    <div class="container layout">
+      <aside id="sidebar" class="card">
+        <div class="sidebar-inner">
+          <div class="sidebar-header">
+            <button id="sidebarToggle" class="btn btn-ghost" aria-label="Toggle menu">
+              ☰
+            </button>
           </div>
-        </aside>
+          <ul class="menu" id="menuList">
+            <li class="menu-item" data-url="index.html" data-content="ホーム">
+              <span class="icon"><img src="data/Resources/Home.png" alt="Home"
+                  style="width: 20px; height: 20px;" /></span><span class="label">Home</span>
+            </li>
 
-        <section id="mainArea">
-          <div id="contentArea">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">モートンオーダーを活用した衝突判定の実装</div>
-              </div>
-              <div class="card-sub">
-                モートンオーダー,Zオーダーを利用して、2D空間における効率的な衝突判定を実装する方法について解説します。<br>
-                空間分割とデータ構造の工夫により、パフォーマンスの向上を図ります。<br>
-              </div>
+            <li class="menu-item" data-url="data/BlogData/Rules/Rules.html" data-content="ルール">
+              <span class="icon"><img src="data/Resources/Rules.png" alt="Rules"
+                  style="width: 20px; height: 20px;" /></span><span class="label">Rules</span>
+            </li>
 
-              <div class="card-content">
-                <h2 class="topic-text">TopicName</h2>
-                <div class="content-text">
-                  <p>
-                    ここに本文が入ります。モートンオーダーを利用した衝突判定の具体的な手法やアルゴリズムについて詳しく説明します。
-                  </p>
-                </div>
-              </div>
+            <li class="menu-item" data-url="template.html" data-content="ドキュメント">
+              <span class="icon"><img src="data/Resources/Documents.png" alt="Documents"
+                  style="width: 20px; height: 20px;" /></span><span class="label">Documents</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
 
-              <div class="card-content">
-                <h2 class="topic-text">TopicName</h2>
-                <div class="content-text">
-                  <p>
-                    ここに本文が入ります。モートンオーダーを利用した衝突判定の具体的な手法やアルゴリズムについて詳しく説明します。
-                  </p>
-                </div>
-              </div>
+      <section id="mainArea">
+        <div id="contentArea">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">モートンオーダーを活用した衝突判定の実装</div>
+            </div>
+            <div class="card-sub">
+              モートンオーダー,Zオーダーを利用して、2D空間における効率的な衝突判定を実装する方法について解説します。<br>
+              空間分割とデータ構造の工夫により、パフォーマンスの向上を図ります。<br>
+            </div>
 
-              <div class="card-content">
-                <h2 class="topic-text">TopicName</h2>
-                <div class="content-text">
-                  <p>
-                    ここに本文が入ります。モートンオーダーを利用した衝突判定の具体的な手法やアルゴリズムについて詳しく説明します。
-                  </p>
-                </div>
-              </div>
 
-              
+            <div class="card-content">
+              <h2 class="topic-text">TopicName</h2>
+              <div class="content-text">
+                <p>
+                  ここに本文が入ります。モートンオーダーを利用した衝突判定の具体的な手法やアルゴリズムについて詳しく説明します。
+                </p>
+              </div>
             </div>
           </div>
-        </section>
-      </div>
-    </main>
-    <script src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js"></script>
-  </body>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+
 </html>

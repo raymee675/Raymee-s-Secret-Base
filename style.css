@@ -741,3 +741,49 @@ select:focus {
   max-width: 100%;
   margin: 0 auto;
 }
+
+/* Centered media elements */
+.content-text img,
+.content-text audio,
+.content-text video {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.content-text img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--transition);
+}
+
+.content-text img:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.content-text audio {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.content-text audio::-webkit-media-controls-panel {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.content-text audio::-webkit-media-controls-play-button,
+.content-text audio::-webkit-media-controls-current-time-display,
+.content-text audio::-webkit-media-controls-time-remaining-display {
+  color: var(--muted);
+}

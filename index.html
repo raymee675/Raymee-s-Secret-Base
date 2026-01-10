@@ -1,69 +1,89 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
 
-    <title>レイミーの秘密基地</title>
-    <meta name="description" content="絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。知的好奇心と時間が有り余っている方にぜひ読んでいただきたいです。" />
-    <meta name="keywords" content="レイミーの秘密基地" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700;900&display=swap"
+    rel="stylesheet">
 
-  <body>
-    <main>
-      <div class="container layout">
-        <aside id="sidebar" class="card">
-          <div class="sidebar-inner">
-            <div class="sidebar-header">
-              <button
-                id="sidebarToggle"
-                class="btn btn-ghost"
-                aria-label="Toggle menu"
-              >
-                ☰
-              </button>
-            </div>
-            <ul class="menu" id="menuList">
-              <li class="menu-item" data-url="index.html" data-content="ホーム">
-                <span class="icon"><img src="data/Resources/Home.png" alt="Home" style="width: 20px; height: 20px;" /></span><span class="label">Home</span>
-              </li>
+  <title>レイミーの秘密基地</title>
+  <meta name="description" content="絵描きだとかプログラミングだとかのよしなしごとをまとめる個人ブログです。知的好奇心と時間が有り余っている方にぜひ" />
+  <meta name="keywords" content="レイミーの秘密基地" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon"
+    href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
+  <meta name="robots" content="index, follow">
 
-              <li class="menu-item" data-url="data/BlogData/Rules/rules.html" data-content="ルール">
-                <span class="icon"><img src="data/Resources/Rules.png" alt="Rules" style="width: 20px; height: 20px;" /></span><span class="label">Rules</span>
-              </li>
+  <!-- OGP（SNSシェア向け） -->
+  <meta property="og:title" content="レイミーの秘密基地" />
+  <meta property="og:description" content="絵描きだとかプログラミングだとかのよしなしごとをまとめる個人ブログです。知的好奇心と時間が有り余っている方にぜひ">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://raymee675.github.io/Raymee-s-Secret-Base/index.html">
+  <meta property="og:image" content="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png">
+  <meta property="og:site_name" content="レイミーの秘密基地">
 
-              <li class="menu-item" data-url="template.html" data-content="ドキュメント">
-                <span class="icon"><img src="data/Resources/Documents.png" alt="Documents" style="width: 20px; height: 20px;" /></span><span class="label">Documents</span>
-              </li>
-            </ul>
+  <!-- Twitter（X）向け-->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="レイミーの秘密基地">
+  <meta name="twitter:description" content="絵描きだとかプログラミングだとかのよしなしごとをまとめる個人ブログです。知的好奇心と時間が有り余っている方にぜひ">
+  <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png">
+</head>
+
+<body>
+  <main>
+    <div class="container layout">
+      <aside id="sidebar" class="card">
+        <div class="sidebar-inner">
+          <div class="sidebar-header">
+            <button id="sidebarToggle" class="btn btn-ghost" aria-label="Toggle menu">
+              ☰
+            </button>
           </div>
-        </aside>
+          <ul class="menu" id="menuList">
+            <li class="menu-item" data-url="index.html" data-content="ホーム">
+              <span class="icon"><img src="data/Resources/Home.png" alt="Home"
+                  style="width: 20px; height: 20px;" /></span><span class="label">Home</span>
+            </li>
 
-        <section id="mainArea">
-          <div id="contentArea">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">レイミーの秘密基地へ、ようこそ</div>
-              </div>
-              <div class="card-sub">
-                絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。<br>
-                知的好奇心と時間が有り余っている方にぜひ<br>
-                Twitter に上げた絵とか、DTM で作った曲とかの創作作品を気まぐれで投稿します。<br>
-                たまにプログラミング関係の記事も書きます。<br>
-                どうぞごゆるりとお楽しみくださいませ。
+            <li class="menu-item" data-url="data/BlogData/Rules/rules.html" data-content="ルール">
+              <span class="icon"><img src="data/Resources/Rules.png" alt="Rules"
+                  style="width: 20px; height: 20px;" /></span><span class="label">Rules</span>
+            </li>
+
+            <li class="menu-item" data-url="template.html" data-content="ドキュメント">
+              <span class="icon"><img src="data/Resources/Documents.png" alt="Documents"
+                  style="width: 20px; height: 20px;" /></span><span class="label">Documents</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <section id="mainArea">
+        <div id="contentArea">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">レイミーの秘密基地へ、ようこそ</div>
+            </div>
+            <div class="card-sub">
+              絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。<br>
+              知的好奇心と時間が有り余っている方にぜひ<br>
+              Twitter に上げた絵とか、DTM で作った曲とかの創作作品を気まぐれで投稿します。<br>
+              たまにプログラミング関係の記事も書きます。<br>
+              どうぞごゆるりとお楽しみくださいませ。<br>
+              各種規約は<a href="data/BlogData/Rules/rules.html" target="_blank" rel="noopener noreferrer">こちら</a>から
             </div>
             <br>
 
             <div style="display: block; margin: 20px auto; border-radius: 50%;">
-              <img src="data/Resources/RaymeeIcon.png" alt="My Icon"style="width: 150px; height: 150px; display: block; margin: 20px auto; border-radius: 50%;"/>
+              <img src="data/Resources/RaymeeIcon.png" alt="My Icon"
+                style="width: 150px; height: 150px; display: block; margin: 20px auto; border-radius: 50%;" />
               <p style="text-align: center;">
                 作者:レイミー (Raymeela)<br>
-                Twitter: <a href="https://twitter.com/raymeela675" target="_blank" rel="noopener noreferrer">@raymee675</a><br>
+                Twitter: <a href="https://twitter.com/raymeela675" target="_blank"
+                  rel="noopener noreferrer">@raymee675</a><br>
                 GitHub: <a href="https://github.com/raymee675" target="_blank" rel="noopener noreferrer">raymee675</a>
               </p>
             </div>
@@ -81,15 +101,17 @@
               <div class="blog-list-items" aria-live="polite">
                 <!-- posts.json を読み込んでここに一覧を挿入します -->
               </div>
-              <div class="blog-pagination" style="text-align: center; padding-top: 20px; border-top: 1px solid #ddd; margin-top: 20px;">
+              <div class="blog-pagination"
+                style="text-align: center; padding-top: 20px; border-top: 1px solid #ddd; margin-top: 20px;">
                 <button id="loadMoreButton" class="btn btn-primary" style="display: none;">過去のブログを読み込む</button>
                 <div id="paginationInfo" class="muted small" style="margin-top: 10px;"></div>
               </div>
             </div>
           </div>
-        </section>
-      </div>
-    </main>
-    <script src="script.js"></script>
-  </body>
+      </section>
+    </div>
+  </main>
+  <script src="script.js"></script>
+</body>
+
 </html>

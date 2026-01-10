@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/style.css">
+    <link rel="icon" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png">
+    
+    {{METADATA}}
+
+</head>
+
+<body>
+    <main>
+        <div class="container layout">
+            <aside id="sidebar" class="card">
+                <div class="sidebar-inner">
+                    <div class="sidebar-header">
+                        <button id="sidebarToggle" class="btn btn-ghost" aria-label="Toggle menu">
+                            ☰
+                        </button>
+                    </div>
+                    <ul class="menu" id="menuList">
+                        <li class="menu-item" data-url="index.html" data-content="ホーム">
+                            <span class="icon"><img src="data/Resources/Home.png" alt="Home"
+                                    style="width: 20px; height: 20px;" /></span><span class="label">Home</span>
+                        </li>
+
+                        <li class="menu-item" data-url="data/BlogData/Rules/Rules.html" data-content="ルール">
+                            <span class="icon"><img src="data/Resources/Rules.png" alt="Rules"
+                                    style="width: 20px; height: 20px;" /></span><span class="label">Rules</span>
+                        </li>
+
+                        <li class="menu-item" data-url="template.html" data-content="ドキュメント">
+                            <span class="icon"><img src="data/Resources/Documents.png" alt="Documents"
+                                    style="width: 20px; height: 20px;" /></span><span class="label">Documents</span>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <section id="mainArea">
+                <div id="contentArea">
+                    <div class="card">
+                        {{MAINTEXT}}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js"></script>
+</body>
+</html>
