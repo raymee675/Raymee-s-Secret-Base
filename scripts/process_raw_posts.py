@@ -119,6 +119,9 @@ def process_item(src_item: Path, meta: dict):
     post_dir = BLOG_DIR / str(next_id)
     post_dir.mkdir(parents=True, exist_ok=True)
 
+    # Define destination HTML name early for use in blog_url
+    dest_html_name = html_path.name
+
     images_dir = post_dir / "images"
     images_dir.mkdir(parents=True, exist_ok=True)
 
@@ -205,7 +208,6 @@ def process_item(src_item: Path, meta: dict):
             replaced = replaced[:insert_pos] + og_meta + replaced[insert_pos:]
 
     # write HTML using original source filename
-    dest_html_name = html_path.name
     with (post_dir / dest_html_name).open("w", encoding="utf-8") as f:
         f.write(replaced)
 
