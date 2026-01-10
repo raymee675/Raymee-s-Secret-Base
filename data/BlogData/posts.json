@@ -1,5 +1,5 @@
 {
-  "lastId": 4,
+  "lastId": 5,
   "posts": [
     {
       "id": 1,
@@ -7,7 +7,11 @@
       "slug": "1",
       "date": "2025-12-28T14:52:31.773787Z",
       "path": "data/BlogData/1/index.html",
-      "tags": [0,1,2],
+      "tags": [
+        0,
+        1,
+        2
+      ],
       "published": true
     },
     {
@@ -16,7 +20,11 @@
       "slug": "2",
       "date": "2025-12-28T15:10:46.105279Z",
       "path": "data/BlogData/2/n.html",
-      "tags": [0,4,6],
+      "tags": [
+        0,
+        4,
+        6
+      ],
       "published": true
     },
     {
@@ -25,7 +33,10 @@
       "slug": "3",
       "date": "2025-12-28T15:18:10.455705Z",
       "path": "data/BlogData/3/n.html",
-      "tags": [2,3],
+      "tags": [
+        2,
+        3
+      ],
       "published": true
     },
     {
@@ -34,8 +45,24 @@
       "slug": "4",
       "date": "2025-12-28T15:22:26.268695Z",
       "path": "data/BlogData/4/n.html",
-      "tags": [1,2,3,4,5],
+      "tags": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
       "summary": "絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。知的好奇心と時間が有り余っている方にぜひTwitter に上げた絵とか、DTM で作った曲とかの創作作品を気まぐれで投稿します。",
+      "published": true
+    },
+    {
+      "id": 5,
+      "title": "初投稿 - レイミーの秘密基地",
+      "summary": "X(Twitter) に初投稿したルーミアの絵です。懐かしい(25/10/17)",
+      "slug": "5",
+      "date": "2026-01-10T15:52:20.165554Z",
+      "path": "data/BlogData/5/初投稿.html",
+      "tags": [],
       "published": true
     }
   ]
