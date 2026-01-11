@@ -137,13 +137,31 @@ def process_item(src_item: Path, meta: dict):
         # ignore absolute urls
         if src.startswith("http://") or src.startswith("https://") or src.startswith("//"):
             return original
-        # resolve source path relative to html file
-        src_path = (html_path.parent / src).resolve()
-        if not src_path.exists():
-            alt = (src_item / src).resolve()
-            if alt.exists():
-                src_path = alt
-        if not src_path.exists():
+        
+        # Try multiple locations to find the media file
+        src_path = None
+        candidates = [
+            html_path.parent / src,  # relative to HTML file
+            src_item / src,  # relative to src_item root
+        ]
+        
+        # Also search in nested 'data' directories
+        if src_item.is_dir():
+            for data_dir in src_item.rglob("data"):
+                candidates.append(data_dir / src)
+                candidates.append(data_dir / Path(src).name)  # just the filename
+        
+        # Check all candidates
+        for candidate in candidates:
+            try:
+                resolved = candidate.resolve()
+                if resolved.exists():
+                    src_path = resolved
+                    break
+            except Exception:
+                continue
+        
+        if not src_path:
             print(f"Media not found: {src} (from {html_path}), leaving original reference")
             return original
 
