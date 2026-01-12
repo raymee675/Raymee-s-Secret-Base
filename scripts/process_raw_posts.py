@@ -137,17 +137,44 @@ def process_item(src_item: Path, meta: dict):
         # ignore absolute urls
         if src.startswith("http://") or src.startswith("https://") or src.startswith("//"):
             return original
-        # resolve source path relative to html file
-        src_path = (html_path.parent / src).resolve()
-        if not src_path.exists():
-            alt = (src_item / src).resolve()
-            if alt.exists():
-                src_path = alt
-        if not src_path.exists():
-            print(f"Media not found: {src} (from {html_path}), leaving original reference")
+        
+        # Extract filename stem (without extension) from HTML src path
+        src_filename_stem = Path(src).stem
+        
+        # Search for actual file in data/data directories using filename stem
+        src_path = None
+        actual_ext = None
+        
+        # Look in nested data directories
+        if src_item.is_dir():
+            for data_dir in src_item.rglob("data"):
+                # Try all possible media extensions
+                for ext in image_exts + video_exts + audio_exts:
+                    candidate = data_dir / f"{src_filename_stem}{ext}"
+                    if candidate.exists():
+                        src_path = candidate
+                        actual_ext = ext
+                        break
+                if src_path:
+                    break
+        
+        # Fallback: try original path resolution
+        if not src_path:
+            src_path = (html_path.parent / src).resolve()
+            if not src_path.exists():
+                alt = (src_item / src).resolve()
+                if alt.exists():
+                    src_path = alt
+                else:
+                    src_path = None
+        
+        if not src_path or not src_path.exists():
+            print(f"Media not found: {src} (stem: {src_filename_stem}) from {html_path}, leaving original reference")
             return original
-
-        ext = Path(src).suffix.lower()
+        
+        # Use actual file extension if found from data/data search
+        ext = actual_ext if actual_ext else src_path.suffix.lower()
+        
         # images: convert to webp
         if ext in image_exts:
             dest_name = Path(src).stem + ".webp"
