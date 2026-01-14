@@ -1,5 +1,5 @@
 {
-  "lastId": 7,
+  "lastId": 8,
   "posts": [
     {
       "id": 1,
@@ -82,6 +82,16 @@
       "slug": "7",
       "date": "2026-01-12T14:51:50.578996Z",
       "path": "data/BlogData/7/初投稿.html",
+      "tags": [],
+      "published": true
+    },
+    {
+      "id": 8,
+      "title": "初投稿 - レイミーの秘密基地",
+      "summary": "X(Twitter) に初投稿したルーミアの絵です。懐かしい(25/10/17)",
+      "slug": "8",
+      "date": "2026-01-12T15:20:48.310020Z",
+      "path": "data/BlogData/8/初投稿.html",
       "tags": [],
       "published": true
     }
