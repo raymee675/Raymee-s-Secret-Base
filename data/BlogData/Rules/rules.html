@@ -1,63 +1,84 @@
 <!DOCTYPE html>
-
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>レイミーの秘密基地</title>
-    <meta name="description" content="絵描きだとかプログラミングだとのよしなしごとをまとめるサイトでございます。知的好奇心と時間が有り余っている方にぜひ読んでいただきたいです。" />
-    <meta name="keywords" content="レイミーの秘密基地" />
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/style.css" />
-    <link rel="icon" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700;900&display=swap"
+    rel="stylesheet">
+  <title>ルール - レイミーの秘密基地</title>
+  <meta name="description" content="過去のブログ記事一覧" />
+  <meta name="keywords" content="レイミーの秘密基地, ブログ, ドキュメント" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/style.css" />
+  <link rel="icon"
+    href="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png" />
+  <meta name="robots" content="index, follow">
 
-  <body>
-    <main>
-      <div class="container layout">
-        <aside id="sidebar" class="card">
-          <div class="sidebar-inner">
-            <div class="sidebar-header">
-              <button
-                id="sidebarToggle"
-                class="btn btn-ghost"
-                aria-label="Toggle menu"
-              >
-                ☰
-              </button>
-            </div>
-            <ul class="menu" id="menuList">
-              <li class="menu-item" data-url="data/BlogData/Home/Home.html" data-content="ホームの概要を表示します。">
-                <span class="icon">🏠</span><span class="label">Home</span>
-              </li>
-              <li
-                class="menu-item"
-                data-url="#profile"
-                data-content="プロフィール情報を表示します。"
-              >
-                <span class="icon">👤</span><span class="label">Profile</span>
-              </li>
-              <li class="menu-item" data-url="#settings" data-content="設定を表示します。">
-                <span class="icon">⚙️</span><span class="label">Settings</span>
-              </li>
-              <li class="menu-item" data-url="#notifications" data-content="お知らせを表示します。">
-                <span class="icon">🔔</span
-                ><span class="label">Notifications</span>
-              </li>
-            </ul>
+  <!-- OGP（SNSシェア向け） -->
+  <meta property="og:title" content="ルール - レイミーの秘密基地" />
+  <meta property="og:description" content="過去のブログ記事一覧">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://raymee675.github.io/Raymee-s-Secret-Base/data/BlogData/Rules/Rules.html">
+  <meta property="og:image"
+    content="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png">
+  <meta property="og:site_name" content="レイミーの秘密基地">
+
+  <!-- Twitter（X）向け-->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ルール - レイミーの秘密基地">
+  <meta name="twitter:description" content="過去のブログ記事一覧">
+  <meta name="twitter:image"
+    content="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/favicon.png">
+</head>
+
+<body>
+  <main>
+    <div class="container layout">
+      <aside id="sidebar" class="card">
+        <div class="sidebar-inner">
+          <div class="sidebar-header">
+            <button id="sidebarToggle" class="btn btn-ghost" aria-label="Toggle menu">
+              ☰
+            </button>
           </div>
-        </aside>
+          <ul class="menu" id="menuList">
+            <li class="menu-item" data-url="https://raymee675.github.io/Raymee-s-Secret-Base/index.html"
+              data-content="ホーム">
+              <span class="icon"><img
+                  src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/Home.png"
+                  alt="Home" style="width: 20px; height: 20px;" /></span><span class="label">Home</span>
+            </li>
 
-        <section id="mainArea">
-          <div id="contentArea">
-            <div class="card">
-              <div class="card-header">
-                <div class="card-title">ルールブック</div>
-              </div>
-              <div class="card-sub">
-                このブログの利用規約やルールについて。<br>
-                そんなガチガチにやるつもりはないですが、一応明記しておきます。<br>
+            <li class="menu-item"
+              data-url="https://raymee675.github.io/Raymee-s-Secret-Base/data/BlogData/Rules/Rules.html"
+              data-content="ルール">
+              <span class="icon"><img
+                  src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/Rules.png"
+                  alt="Rules" style="width: 20px; height: 20px;" /></span><span class="label">Rules</span>
+            </li>
+
+            <li class="menu-item"
+              data-url="https://raymee675.github.io/Raymee-s-Secret-Base/data/BlogData/Documents/Documents.html"
+              data-content="ドキュメント">
+              <span class="icon"><img
+                  src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/data/Resources/Documents.png"
+                  alt="Documents" style="width: 20px; height: 20px;" /></span><span class="label">Documents</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <section id="mainArea">
+        <div id="contentArea">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">ルールブック</div>
+            </div>
+            <div class="card-sub">
+              このブログの利用規約やルールについて。<br>
+              そんなガチガチにやるつもりはないですが、一応明記しておきます。<br>
             </div>
 
             <br>
@@ -74,7 +95,7 @@
                   が、特段著作関係を気にするつもりはないので、個人利用の範囲であれば自由に使用、共有、改変していただいて良しです<br>
                   公序良俗の範囲の中でご自由にどうぞ。<br>
                   引用もご自由に。出典の記載は任意とします。でもまぁ記載してくれたり、私に連絡をくれたりするとすごく嬉しいです。<br>
-                  
+
                   但し、商用利用や再配布を行う場合は、事前にご連絡ください。<br>
                   <a href="https://x.com/Raymeela675" target="_blank">@Raymeela675</a> までお願いします。<br>
 
@@ -84,7 +105,7 @@
 
                 <h2>2. コメントとフィードバック</h2>
                 <p>
-                    当ブログにはコメント機能がないので、フィードバックは Twitter 等でお願いします。<br>
+                  当ブログにはコメント機能がないので、フィードバックは Twitter 等でお願いします。<br>
                 </p>
                 <br><br>
 
@@ -107,11 +128,12 @@
                 <br><br>
               </div>
 
-          </div>
-        </section>
-      </div>
-    </main>
-    <div></div>
-    <script src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js"></script>
-  </body>
+            </div>
+      </section>
+    </div>
+  </main>
+  <div></div>
+  <script src="https://cdn.jsdelivr.net/gh/raymee675/Raymee-s-Secret-Base@latest/script.js"></script>
+</body>
+
 </html>

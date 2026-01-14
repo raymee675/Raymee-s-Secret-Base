@@ -180,7 +180,8 @@ document.addEventListener("DOMContentLoaded", function () {
       
         const html = postsToShow
         .map((p) => {
-          const title = p.title || `Post ${p.id}`;
+          const rawTitle = p.title || `Post ${p.id}`;
+          const title = rawTitle.replace(/ - レイミーの秘密基地$/, '');
           const summary = p.summary || '';
           const href = p.path || (`data/BlogData/${p.id}/index.html`);
 
