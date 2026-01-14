@@ -91,7 +91,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return fetchJson(primaryUrl);
       })
       .then((meta) => {
-        allPosts = (meta && meta.posts) || [];
+        // Filter only published posts
+        allPosts = ((meta && meta.posts) || []).filter((post) => post.published === true);
         if (allPosts.length === 0) {
           blogListContainer.innerHTML = '<div class="muted">投稿が見つかりません。</div>';
           return;
