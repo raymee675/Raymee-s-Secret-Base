@@ -42,9 +42,44 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Activate first menu item by default (without clicking)
-  const first = document.querySelector("#menuList .menu-item");
-  if (first) first.classList.add("active");
+  // Activate menu item based on current URL
+  function activateMenuByUrl() {
+    const currentPath = window.location.pathname;
+    const currentFile = currentPath.split('/').pop() || 'index.html';
+    
+    let matchedItem = null;
+    
+    // Check for specific page matches
+    if (currentFile === 'index.html' || currentPath.endsWith('/') || currentFile === '') {
+      matchedItem = Array.from(menuItems).find(item => 
+        item.textContent.trim().toLowerCase() === 'home'
+      );
+    } else if (currentFile.toLowerCase() === 'rules.html') {
+      matchedItem = Array.from(menuItems).find(item => 
+        item.textContent.trim().toLowerCase() === 'rules'
+      );
+    } else if (currentFile.toLowerCase() === 'documents.html') {
+      matchedItem = Array.from(menuItems).find(item => 
+        item.textContent.trim().toLowerCase() === 'documents'
+      );
+    }
+    
+    // If a match was found, activate it
+    if (matchedItem) {
+      document
+        .querySelectorAll("#menuList .menu-item.active")
+        .forEach(function (el) {
+          el.classList.remove("active");
+        });
+      matchedItem.classList.add("active");
+    } else {
+      // If no match, activate first menu item by default
+      const first = document.querySelector("#menuList .menu-item");
+      if (first) first.classList.add("active");
+    }
+  }
+  
+  activateMenuByUrl();
 
   // Fetch and render posts list
   const blogListContainer = document.querySelector('.blog-list-items');
