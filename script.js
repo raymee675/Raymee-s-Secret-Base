@@ -49,31 +49,48 @@ document.addEventListener("DOMContentLoaded", function () {
     
     let matchedItem = null;
     
-    // Check for specific page matches
-    if (currentFile === 'index.html' || currentPath.endsWith('/') || currentFile === '') {
-      matchedItem = Array.from(menuItems).find(item => 
-        item.textContent.trim().toLowerCase() === 'home'
-      );
-    } else if (currentFile.toLowerCase() === 'rules.html') {
-      matchedItem = Array.from(menuItems).find(item => 
-        item.textContent.trim().toLowerCase() === 'rules'
-      );
-    } else if (currentFile.toLowerCase() === 'documents.html') {
-      matchedItem = Array.from(menuItems).find(item => 
-        item.textContent.trim().toLowerCase() === 'documents'
-      );
+    // First, try to match by data-url attribute
+    menuItems.forEach(function(item) {
+      const itemUrl = item.dataset.url;
+      if (!itemUrl) return;
+      
+      // Normalize paths for comparison
+      const normalizedItemUrl = itemUrl.toLowerCase().replace(/\\/g, '/');
+      const normalizedCurrentPath = currentPath.toLowerCase().replace(/\\/g, '/');
+      
+      // Check if current path ends with the item's URL or matches exactly
+      if (normalizedCurrentPath.endsWith(normalizedItemUrl) || 
+          normalizedCurrentPath.includes(normalizedItemUrl)) {
+        matchedItem = item;
+      }
+    });
+    
+    // If no direct match, try matching by filename and label
+    if (!matchedItem) {
+      if (currentFile === 'index.html' || currentPath.endsWith('/') || currentFile === '') {
+        matchedItem = Array.from(menuItems).find(item => 
+          item.querySelector('.label')?.textContent.trim().toLowerCase() === 'home'
+        );
+      } else if (currentFile.toLowerCase() === 'rules.html') {
+        matchedItem = Array.from(menuItems).find(item => 
+          item.querySelector('.label')?.textContent.trim().toLowerCase() === 'rules'
+        );
+      } else if (currentFile.toLowerCase() === 'documents.html') {
+        matchedItem = Array.from(menuItems).find(item => 
+          item.querySelector('.label')?.textContent.trim().toLowerCase() === 'documents'
+        );
+      }
     }
     
-    // If a match was found, activate it
+    // Clear all active states first
+    document.querySelectorAll("#menuList .menu-item.active").forEach(function (el) {
+      el.classList.remove("active");
+    });
+    
+    // Activate the matched item or default to first
     if (matchedItem) {
-      document
-        .querySelectorAll("#menuList .menu-item.active")
-        .forEach(function (el) {
-          el.classList.remove("active");
-        });
       matchedItem.classList.add("active");
     } else {
-      // If no match, activate first menu item by default
       const first = document.querySelector("#menuList .menu-item");
       if (first) first.classList.add("active");
     }
