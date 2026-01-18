@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const rawTitle = p.title || `Post ${p.id}`;
           const title = rawTitle.replace(/ - レイミーの秘密基地$/, '');
           const summary = p.summary || '';
-          const href = p.path || (`data/BlogData/${p.id}/index.html`);
+          const href = `https://raymee675.github.io/Raymee-s-Secret-Base/data/${p.path}`;
 
           function formatDate(d) {
             if (!d) return '';
