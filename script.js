@@ -16,14 +16,34 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   toggle.addEventListener("click", function () {
-    sidebar.classList.toggle("collapsed");
-    try {
-      localStorage.setItem(
-        sidebarStorageKey,
-        sidebar.classList.contains("collapsed")
-      );
-    } catch (e) {
-      // ignore storage access errors
+    // Check if mobile view (viewport width <= 768px)
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+      // On mobile, toggle the 'show' class for overlay behavior
+      sidebar.classList.toggle("show");
+    } else {
+      // On desktop, toggle the 'collapsed' class for narrow sidebar
+      sidebar.classList.toggle("collapsed");
+      try {
+        localStorage.setItem(
+          sidebarStorageKey,
+          sidebar.classList.contains("collapsed")
+        );
+      } catch (e) {
+        // ignore storage access errors
+      }
+    }
+  });
+
+  // Close sidebar when clicking outside on mobile
+  document.addEventListener("click", function (event) {
+    const isMobile = window.innerWidth <= 768;
+    if (!isMobile) return;
+    
+    // Check if click is outside sidebar and toggle button
+    if (!sidebar.contains(event.target) && !toggle.contains(event.target)) {
+      sidebar.classList.remove("show");
     }
   });
 
@@ -35,6 +55,13 @@ document.addEventListener("DOMContentLoaded", function () {
           el.classList.remove("active");
         });
       item.classList.add("active");
+      
+      // Close sidebar on mobile when menu item is clicked
+      const isMobile = window.innerWidth <= 768;
+      if (isMobile) {
+        sidebar.classList.remove("show");
+      }
+      
       const url = item.dataset.url;
       if (url) {
         window.location.href = url;

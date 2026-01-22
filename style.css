@@ -671,6 +671,7 @@ select:focus {
   transition: none; /* prevent layout transitions when sidebar toggles */
 }
 
+/* Tablet and below - narrow sidebar */
 @media (max-width: 960px) {
   #sidebar {
     width: 72px;
@@ -678,11 +679,251 @@ select:focus {
   #sidebar .collapsed {
     width: 72px;
   }
+  #sidebar .label {
+    display: none;
+  }
   .layout {
     padding: 0;
   }
   #mainArea {
     margin-left: 72px;
+    width: calc(100% - 72px);
+  }
+}
+
+/* Mobile - overlay sidebar */
+@media (max-width: 768px) {
+  body {
+    padding: 16px 12px;
+  }
+
+  /* Sidebar becomes an overlay on mobile */
+  #sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: rgba(12, 12, 13, 0.98);
+    backdrop-filter: blur(12px);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);
+    transition: left 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+    z-index: 2000;
+  }
+
+  #sidebar.show {
+    left: 0;
+  }
+
+  /* Overlay background when sidebar is open */
+  #sidebar.show::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 260px;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  #sidebar .label {
+    display: block !important;
+  }
+
+  /* Main area takes full width on mobile */
+  #mainArea {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  /* Sidebar toggle button - visible on mobile */
+  #sidebarToggle {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 1500;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    padding: 12px 16px;
+    border-radius: 0;
+    box-shadow: 0 4px 16px rgba(225, 27, 34, 0.3);
+    font-size: 1.2rem;
+    border: none;
+  }
+
+  /* Content area adjustments */
+  #contentArea {
+    width: 100%;
+    padding: 0;
+  }
+
+  .card {
+    padding: 16px;
+    border-radius: 0;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    padding-left: 16px;
+  }
+
+  .card-sub {
+    font-size: 0.95rem;
+  }
+
+  /* Blog items stack vertically */
+  .blog-item {
+    padding: 12px;
+  }
+
+  .blog-item-layout {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .blog-item-left {
+    flex: 1;
+  }
+
+  .blog-item-separator {
+    width: 100%;
+    height: 1px;
+  }
+
+  .blog-item-right {
+    flex: 1;
+  }
+
+  .blog-item-title {
+    font-size: 1rem;
+  }
+
+  .blog-item-summary {
+    font-size: 0.9rem;
+  }
+
+  /* Tag filter tabs adjustments */
+  .tag-filter-tabs {
+    padding: 12px 8px;
+    gap: 6px;
+  }
+
+  .tag-tab {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* Pagination button */
+  #loadMoreButton {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  /* Content text adjustments */
+  .card-content .topic-text {
+    font-size: 1.15rem;
+    padding-left: 16px;
+  }
+
+  .card-content .content-text {
+    font-size: 0.95rem;
+  }
+
+  /* Media elements on mobile */
+  .content-text img,
+  .content-text audio,
+  .content-text video {
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  .content-text img {
+    width: 100%;
+    height: auto;
+  }
+
+  .content-text audio {
+    max-width: 100%;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  body {
+    padding: 12px 8px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+    padding-left: 12px;
+  }
+
+  .card-title::before {
+    width: 4px;
+  }
+
+  .card-sub {
+    font-size: 0.9rem;
+  }
+
+  .blog-item {
+    padding: 10px;
+  }
+
+  .blog-item-title {
+    font-size: 0.95rem;
+  }
+
+  .blog-item-date {
+    font-size: 0.8em;
+  }
+
+  .blog-item-summary {
+    font-size: 0.85rem;
+  }
+
+  .tag-tab {
+    padding: 5px 10px;
+    font-size: 0.75rem;
+  }
+
+  .card-content .topic-text {
+    font-size: 1.05rem;
+    padding-left: 12px;
+  }
+
+  .card-content .content-text {
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  h3 {
+    font-size: 1.05rem;
   }
 }
 
