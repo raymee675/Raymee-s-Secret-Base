@@ -5,17 +5,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (!sidebar || !toggle) return;
 
-  // restore collapsed state (guard against storage being blocked by tracking prevention)
+  // restore collapsed state only on desktop (guard against storage being blocked by tracking prevention)
   const sidebarStorageKey = "sidebarCollapsed";
   try {
-    if (localStorage.getItem(sidebarStorageKey) === "true") {
+    if (window.innerWidth > 768 && localStorage.getItem(sidebarStorageKey) === "true") {
       sidebar.classList.add("collapsed");
     }
   } catch (e) {
     // ignore storage access errors
   }
 
-  toggle.addEventListener("click", function () {
+  // Handle window resize to clean up classes
+  let resizeTimer;
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      const isMobile = window.innerWidth <= 768;
+      if (!isMobile) {
+        // On desktop, remove mobile-specific 'show' class
+        sidebar.classList.remove("show");
+      } else {
+        // On mobile, remove desktop-specific 'collapsed' class if sidebar is not intentionally shown
+        if (!sidebar.classList.contains("show")) {
+          sidebar.classList.remove("collapsed");
+        }
+      }
+    }, 250);
+  });
+
+  toggle.addEventListener("click", function (e) {
+    e.stopPropagation();
     // Check if mobile view (viewport width <= 768px)
     const isMobile = window.innerWidth <= 768;
     
@@ -41,8 +60,27 @@ document.addEventListener("DOMContentLoaded", function () {
     const isMobile = window.innerWidth <= 768;
     if (!isMobile) return;
     
-    // Check if click is outside sidebar and toggle button
-    if (!sidebar.contains(event.target) && !toggle.contains(event.target)) {
+    // Check if sidebar is shown
+    if (!sidebar.classList.contains("show")) return;
+    
+    // Check if click is on sidebar
+    if (sidebar.contains(event.target)) {
+      // Check if click is in the close button area (top-left 80x80px)
+      const rect = sidebar.getBoundingClientRect();
+      const clickX = event.clientX - rect.left;
+      const clickY = event.clientY - rect.top;
+      
+      if (clickX >= 0 && clickX <= 80 && clickY >= 0 && clickY <= 80) {
+        // Click on close button area
+        sidebar.classList.remove("show");
+        return;
+      }
+      // Click inside sidebar but not on close button - do nothing
+      return;
+    }
+    
+    // Click outside sidebar and toggle button - close sidebar
+    if (!toggle.contains(event.target)) {
       sidebar.classList.remove("show");
     }
   });
