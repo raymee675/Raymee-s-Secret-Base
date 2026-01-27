@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://raymee675.github.io/Raymee-s-Secret-Base/sitemap.xml
