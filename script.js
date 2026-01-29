@@ -377,4 +377,160 @@ document.addEventListener("DOMContentLoaded", function () {
       .replace(/\"/g, '&quot;')
       .replace(/\'/g, '&#39;');
   }
+
+  // Related posts functionality for parent.html pages
+  const relatedPostsContainer = document.querySelector('.related-posts-items');
+  
+  if (relatedPostsContainer) {
+    // Extract tags from meta tag
+    const metaTag = document.querySelector('meta[name="tags"]');
+    const tagsContent = metaTag ? metaTag.getAttribute('content') : '';
+    
+    // Parse tags from "id/id/id" format
+    const currentTags = tagsContent
+      .split('/')
+      .map(t => parseInt(t.trim(), 10))
+      .filter(t => !isNaN(t));
+    
+    // Extract current page path to exclude current post
+    const currentPath = window.location.pathname;
+    
+    // Get current page date if available (from og:url or try to extract from path)
+    let currentDate = null;
+    const ogUrlMeta = document.querySelector('meta[property="og:url"]');
+    if (ogUrlMeta) {
+      // Try to find date in the current document - may need adjustment based on actual structure
+      // For now we'll use current date as fallback
+      currentDate = new Date();
+    }
+    
+    const cdnBase = 'https://raymee675.github.io/Raymee-s-Secret-Base';
+    const cdnPostsPath = `${cdnBase}/data/BlogData/posts.json`;
+    const maxRelatedPosts = 5; // Number of related posts to show
+    
+    function fetchJson(url) {
+      return fetch(url, { cache: 'no-store' }).then((res) => {
+        if (!res.ok) throw new Error(`fetch failed: ${url} (${res.status})`);
+        return res.json();
+      });
+    }
+    
+    function findRelatedPosts(allPosts, currentTags, currentPath) {
+      if (!allPosts || allPosts.length === 0) return [];
+      
+      // Filter published posts only and exclude current post
+      let candidatePosts = allPosts.filter((post) => {
+        if (post.published !== true) return false;
+        // Exclude current post by checking if path matches
+        if (currentPath.includes(post.path)) return false;
+        return true;
+      });
+      
+      // If no tags, return recent posts
+      if (currentTags.length === 0) {
+        return candidatePosts
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .slice(0, maxRelatedPosts);
+      }
+      
+      // Score posts by tag overlap and date proximity
+      const scoredPosts = candidatePosts.map((post) => {
+        let score = 0;
+        const postTags = post.tags || [];
+        
+        // Calculate tag overlap (union of categories)
+        const commonTags = currentTags.filter(tag => postTags.includes(tag));
+        score += commonTags.length * 10; // Weight tag matches heavily
+        
+        // Add date proximity bonus if available
+        if (currentDate && post.date) {
+          const postDate = new Date(post.date);
+          const daysDiff = Math.abs((currentDate - postDate) / (1000 * 60 * 60 * 24));
+          // Closer dates get higher scores (max 5 bonus points)
+          const dateScore = Math.max(0, 5 - daysDiff / 30);
+          score += dateScore;
+        }
+        
+        return { post, score };
+      });
+      
+      // Sort by score descending, then by date descending
+      scoredPosts.sort((a, b) => {
+        if (b.score !== a.score) return b.score - a.score;
+        return new Date(b.post.date) - new Date(a.post.date);
+      });
+      
+      // Return top N posts
+      return scoredPosts.slice(0, maxRelatedPosts).map(sp => sp.post);
+    }
+    
+    function formatDate(d) {
+      if (!d) return '';
+      try {
+        const dt = new Date(d);
+        if (isNaN(dt)) return d;
+        const year = dt.getFullYear();
+        const month = String(dt.getMonth() + 1).padStart(2, '0');
+        const day = String(dt.getDate()).padStart(2, '0');
+        return `${year}/${month}/${day}`;
+      } catch (e) {
+        return d;
+      }
+    }
+    
+    function renderRelatedPosts(posts) {
+      if (!posts || posts.length === 0) {
+        relatedPostsContainer.innerHTML = '<div class="muted">関連記事が見つかりません。</div>';
+        return;
+      }
+      
+      const html = posts
+        .map((p) => {
+          const rawTitle = p.title || `Post ${p.id}`;
+          const title = rawTitle.replace(/ - レイミーの秘密基地$/, '');
+          const summary = p.summary || '';
+          const href = `https://raymee675.github.io/Raymee-s-Secret-Base/${p.path}`;
+          
+          return `
+            <article class="blog-item">
+              <div class="blog-item-layout">
+                <div class="blog-item-left">
+                  <div class="blog-item-title">
+                    <h3><a href="${href}">${escapeHtml(title)}</a></h3>
+                  </div>
+                  <div class="blog-item-date">
+                    ${escapeHtml(formatDate(p.date))}
+                  </div>
+                </div>
+                <div class="blog-item-separator"></div>
+                <div class="blog-item-right">
+                  <div class="blog-item-summary">
+                    ${escapeHtml(summary)}
+                  </div>
+                </div>
+              </div>
+            </article>
+          `;
+        })
+        .join('\n');
+      
+      relatedPostsContainer.innerHTML = html;
+    }
+    
+    // Load and display related posts
+    fetchJson(cdnPostsPath)
+      .then((meta) => {
+        const allPosts = (meta && meta.posts) || [];
+        const relatedPosts = findRelatedPosts(allPosts, currentTags, currentPath);
+        renderRelatedPosts(relatedPosts);
+      })
+      .catch((err) => {
+        const msg = document.createElement('div');
+        msg.className = 'muted';
+        msg.textContent = '関連記事を読み込めませんでした。';
+        relatedPostsContainer.innerHTML = '';
+        relatedPostsContainer.appendChild(msg);
+        console.error(err);
+      });
+  }
 });
