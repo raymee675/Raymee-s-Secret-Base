@@ -238,6 +238,45 @@ def process_item(src_item: Path, meta: dict):
     with (post_dir / dest_html_name).open("w", encoding="utf-8") as f:
         f.write(replaced)
 
+    # Process files in data directories
+    if src_item.is_dir():
+        for data_dir in src_item.rglob("data"):
+            if data_dir.is_dir():
+                for item in data_dir.iterdir():
+                    if not item.is_file():
+                        continue
+                    
+                    ext = item.suffix.lower()
+                    
+                    # Process images: convert to webp
+                    if ext in image_exts:
+                        dest_name = item.stem + ".webp"
+                        dest_img_path = images_dir / dest_name
+                        convert_to_webp(item, dest_img_path)
+                        print(f"Converted data image: {item.name} -> {dest_name}")
+                    
+                    # Process videos: copy to videos/
+                    elif ext in video_exts:
+                        videos_dir = post_dir / "videos"
+                        videos_dir.mkdir(parents=True, exist_ok=True)
+                        dest_video = videos_dir / item.name
+                        try:
+                            shutil.copy2(item, dest_video)
+                            print(f"Copied data video: {item.name}")
+                        except Exception as e:
+                            print(f"Failed to copy data video {item}: {e}")
+                    
+                    # Process audio: copy to audio/
+                    elif ext in audio_exts:
+                        audio_dir = post_dir / "audio"
+                        audio_dir.mkdir(parents=True, exist_ok=True)
+                        dest_audio = audio_dir / item.name
+                        try:
+                            shutil.copy2(item, dest_audio)
+                            print(f"Copied data audio: {item.name}")
+                        except Exception as e:
+                            print(f"Failed to copy data audio {item}: {e}")
+
     # copy other files (non-html assets) that are in the src_item folder (like css) if present
     for item in src_item.iterdir() if src_item.is_dir() else []:
         if item.is_file() and item.suffix.lower() != ".html":
