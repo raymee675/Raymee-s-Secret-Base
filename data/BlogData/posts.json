@@ -1,5 +1,5 @@
 {
-  "lastId": 9,
+  "lastId": 10,
   "posts": [
     {
       "id": 1,
@@ -102,6 +102,18 @@
       "slug": "9",
       "date": "2026-01-29T14:17:51.940376Z",
       "path": "data/BlogData/9/紅月.html",
+      "tags": [
+        3
+      ],
+      "published": true
+    },
+    {
+      "id": 10,
+      "title": "紅月 - レイミーの秘密基地",
+      "summary": "去年の月食の時の写真とレミリアイラスト",
+      "slug": "10",
+      "date": "2026-01-30T01:45:16.816640Z",
+      "path": "data/BlogData/10/紅月.html",
       "tags": [
         3
       ],
