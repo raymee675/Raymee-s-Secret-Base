@@ -92,7 +92,7 @@
       "slug": "8",
       "date": "2026-01-12T15:20:48.310020Z",
       "path": "data/BlogData/8/初投稿.html",
-      "tags": [],
+      "tags": [3,4],
       "published": true
     },
     {
@@ -105,7 +105,7 @@
       "tags": [
         3
       ],
-      "published": true
+      "published": false
     },
     {
       "id": 10,
