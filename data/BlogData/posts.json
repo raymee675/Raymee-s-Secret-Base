@@ -1,5 +1,5 @@
 {
-  "lastId": 10,
+  "lastId": 11,
   "posts": [
     {
       "id": 1,
@@ -92,7 +92,10 @@
       "slug": "8",
       "date": "2026-01-12T15:20:48.310020Z",
       "path": "data/BlogData/8/初投稿.html",
-      "tags": [3,4],
+      "tags": [
+        3,
+        4
+      ],
       "published": true
     },
     {
@@ -116,6 +119,19 @@
       "path": "data/BlogData/10/紅月.html",
       "tags": [
         3
+      ],
+      "published": true
+    },
+    {
+      "id": 11,
+      "title": "ルーミアの日 2026_2 - レイミーの秘密基地",
+      "summary": "2026 年 2 月のルーミアの日のイラストです。 髪の書き込みをかなーり頑張ったつもり。",
+      "slug": "2026-2",
+      "date": "2026-02-09T15:23:26.639538Z",
+      "path": "data/BlogData/11/ルーミアの日 2026_2.html",
+      "tags": [
+        3,
+        4
       ],
       "published": true
     }
