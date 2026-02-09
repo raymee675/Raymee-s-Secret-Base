@@ -6,6 +6,7 @@ import json
 import shutil
 from pathlib import Path
 from datetime import datetime
+import xml.etree.ElementTree as ET
 
 try:
     from PIL import Image
@@ -18,6 +19,7 @@ RAW_DIR = ROOT / "data" / "BlogData" / "RawData"
 BLOG_DIR = ROOT / "data" / "BlogData"
 META_FILE = BLOG_DIR / "posts.json"
 ARCHIVE_DIR = RAW_DIR / "processed"
+SITEMAP_FILE = ROOT / "sitemap.xml"
 
 MEDIA_RE = re.compile(r'<(?:img|source|video|audio)[^>]+src\s*=\s*["\']([^"\']+)["\']', flags=re.I)
 TITLE_RE = re.compile(r'<title>(.*?)<\/title>', flags=re.I | re.S)
@@ -66,6 +68,66 @@ def make_slug(title):
     s = re.sub(r"[^0-9a-zA-Z\-]+", "-", title.lower())
     s = re.sub(r"-+", "-", s).strip("-")
     return s or None
+
+
+def update_sitemap(meta):
+    """
+    Update sitemap.xml with all blog posts from meta
+    """
+    base_url = "https://raymee675.github.io/Raymee-s-Secret-Base/"
+    
+    # Create XML structure
+    ET.register_namespace('', 'http://www.sitemaps.org/schemas/sitemap/0.9')
+    urlset = ET.Element('urlset', xmlns='http://www.sitemaps.org/schemas/sitemap/0.9')
+    
+    # Add main pages
+    main_urls = [
+        {"loc": base_url, "priority": "1.0"},
+        {"loc": f"{base_url}index.html", "priority": "1.0"}
+    ]
+    
+    for url_info in main_urls:
+        url_elem = ET.SubElement(urlset, 'url')
+        ET.SubElement(url_elem, 'loc').text = url_info['loc']
+        ET.SubElement(url_elem, 'lastmod').text = datetime.now().strftime('%Y-%m-%d')
+        ET.SubElement(url_elem, 'changefreq').text = 'weekly'
+        ET.SubElement(url_elem, 'priority').text = url_info['priority']
+    
+    # Add blog posts
+    posts = meta.get('posts', [])
+    # Sort posts by date (newest first) for better SEO
+    sorted_posts = sorted(posts, key=lambda x: x.get('date', ''), reverse=True)
+    
+    for post in sorted_posts:
+        if not post.get('published', True):
+            continue
+        
+        url_elem = ET.SubElement(urlset, 'url')
+        post_url = f"{base_url}{post['path']}"
+        ET.SubElement(url_elem, 'loc').text = post_url
+        
+        # Extract date from ISO format
+        date_str = post.get('date', datetime.now().isoformat())
+        try:
+            date_obj = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+            lastmod = date_obj.strftime('%Y-%m-%d')
+        except Exception:
+            lastmod = datetime.now().strftime('%Y-%m-%d')
+        
+        ET.SubElement(url_elem, 'lastmod').text = lastmod
+        ET.SubElement(url_elem, 'changefreq').text = 'monthly'
+        ET.SubElement(url_elem, 'priority').text = '0.8'
+    
+    # Write to file with proper formatting
+    tree = ET.ElementTree(urlset)
+    ET.indent(tree, space='  ')
+    
+    with SITEMAP_FILE.open('wb') as f:
+        f.write(b'<?xml version="1.0" encoding="UTF-8"?>\n')
+        tree.write(f, encoding='utf-8', xml_declaration=False)
+        f.write(b'\n')
+    
+    print(f"Sitemap updated with {len(sorted_posts)} blog posts")
 
 
 def convert_to_webp(src_image: Path, dest_image: Path):
@@ -342,6 +404,7 @@ def main():
     if changed:
         save_meta(meta)
         print("Meta updated.")
+        update_sitemap(meta)
     else:
         print("No changes made.")
 
