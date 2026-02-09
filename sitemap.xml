@@ -2,15 +2,26 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://raymee675.github.io/Raymee-s-Secret-Base/</loc>
-    <lastmod>2026-01-27</lastmod>
+    <lastmod>2026-02-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://raymee675.github.io/Raymee-s-Secret-Base/index.html</loc>
-    <lastmod>2026-01-27</lastmod>
+    <lastmod>2026-02-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <!-- ブログ記事を追加する場合はここに追加 -->
+  <url>
+    <loc>https://raymee675.github.io/Raymee-s-Secret-Base/data/BlogData/10/紅月.html</loc>
+    <lastmod>2026-02-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://raymee675.github.io/Raymee-s-Secret-Base/data/BlogData/8/初投稿.html</loc>
+    <lastmod>2026-02-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
