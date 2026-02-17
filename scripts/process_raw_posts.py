@@ -20,13 +20,119 @@ BLOG_DIR = ROOT / "data" / "BlogData"
 META_FILE = BLOG_DIR / "posts.json"
 ARCHIVE_DIR = RAW_DIR / "processed"
 SITEMAP_FILE = ROOT / "sitemap.xml"
+BASE_URL = "https://raymee675.github.io/Raymee-s-Secret-Base/"
 
 MEDIA_RE = re.compile(r'<(?:img|source|video|audio)[^>]+src\s*=\s*["\']([^"\']+)["\']', flags=re.I)
+IMG_SRC_RE = re.compile(r'<img[^>]+src\s*=\s*["\']([^"\']+)["\']', flags=re.I)
 TITLE_RE = re.compile(r'<title>(.*?)<\/title>', flags=re.I | re.S)
 META_DESC_RE = re.compile(r'<meta[^>]+name=["\']description["\'][^>]*content=["\']([^"\']*)["\']', flags=re.I)
 META_TAGS_RE = re.compile(r'<meta[^>]+name=["\'](?:tags|tag)["\'][^>]*content=["\']([^"\']*)["\']', flags=re.I)
 META_OG_URL_RE = re.compile(r'<meta\s+property=["\']og:url["\']\s+content=["\']([^"\']*)["\'][^>]*>', flags=re.I)
+META_OG_IMAGE_RE = re.compile(r'<meta\s+property=["\']og:image["\']\s+content=["\']([^"\']*)["\'][^>]*>', flags=re.I)
+META_TWITTER_IMAGE_RE = re.compile(r'<meta\s+name=["\']twitter:image["\']\s+content=["\']([^"\']*)["\'][^>]*>', flags=re.I)
 P_TAG_RE = re.compile(r'<p>(.*?)<\/p>', flags=re.I | re.S)
+
+
+def to_absolute_url(url: str, blog_url: str) -> str:
+    s = (url or "").strip()
+    if not s:
+        return s
+    if s.startswith("http://") or s.startswith("https://"):
+        return s
+    if s.startswith("//"):
+        return f"https:{s}"
+    if s.startswith("/"):
+        return f"{BASE_URL.rstrip('/')}{s}"
+    blog_dir_url = blog_url.rsplit("/", 1)[0] + "/"
+    return f"{blog_dir_url}{s}"
+
+
+def normalize_social_meta(html: str, blog_url: str) -> str:
+    result = html
+
+    def _replace_og_url(_match):
+        return f'<meta property="og:url" content="{blog_url}">'
+
+    if META_OG_URL_RE.search(result):
+        result = META_OG_URL_RE.sub(_replace_og_url, result)
+    else:
+        head_tag = re.search(r'<head[^>]*>', result, flags=re.I)
+        if head_tag:
+            insert_pos = head_tag.end()
+            result = result[:insert_pos] + f'\n    <meta property="og:url" content="{blog_url}">' + result[insert_pos:]
+
+    blog_dir_url = blog_url.rsplit("/", 1)[0] + "/"
+    first_img_src = ""
+    for src in IMG_SRC_RE.findall(result):
+        s = (src or "").strip()
+        if not s or s.startswith("data:"):
+            continue
+        if s.startswith("http://") or s.startswith("https://"):
+            if s.startswith(blog_dir_url):
+                first_img_src = s
+                break
+            continue
+        if s.startswith("//"):
+            continue
+        first_img_src = s
+        break
+
+    og_image_match = META_OG_IMAGE_RE.search(result)
+    twitter_image_match = META_TWITTER_IMAGE_RE.search(result)
+    og_image_value = og_image_match.group(1).strip() if og_image_match else ""
+    twitter_image_value = twitter_image_match.group(1).strip() if twitter_image_match else ""
+
+    preferred_image = first_img_src or og_image_value or twitter_image_value or "images/Icon.webp"
+    absolute_image_url = to_absolute_url(preferred_image, blog_url)
+
+    def _replace_og_image(_match):
+        return f'<meta property="og:image" content="{absolute_image_url}">'
+
+    def _replace_twitter_image(_match):
+        return f'<meta name="twitter:image" content="{absolute_image_url}">'
+
+    if META_OG_IMAGE_RE.search(result):
+        result = META_OG_IMAGE_RE.sub(_replace_og_image, result)
+    else:
+        title_tag = re.search(r'<title[^>]*>.*?<\/title>', result, flags=re.I | re.S)
+        if title_tag:
+            insert_pos = title_tag.end()
+            result = result[:insert_pos] + f'\n<meta property="og:image" content="{absolute_image_url}">' + result[insert_pos:]
+
+    if META_TWITTER_IMAGE_RE.search(result):
+        result = META_TWITTER_IMAGE_RE.sub(_replace_twitter_image, result)
+    else:
+        card_tag = re.search(r'<meta\s+name=["\']twitter:card["\'][^>]*>', result, flags=re.I)
+        if card_tag:
+            insert_pos = card_tag.end()
+            result = result[:insert_pos] + f'\n<meta name="twitter:image" content="{absolute_image_url}">' + result[insert_pos:]
+
+    return result
+
+
+def normalize_existing_posts_social_meta(meta: dict):
+    updated = 0
+    for post in meta.get("posts", []):
+        rel_path = (post.get("path") or "").strip()
+        if not rel_path:
+            continue
+        html_path = ROOT / rel_path
+        if not html_path.exists() or html_path.suffix.lower() != ".html":
+            continue
+
+        blog_url = f"{BASE_URL}{rel_path.replace(os.sep, '/')}"
+        try:
+            original = html_path.read_text(encoding="utf-8")
+            normalized = normalize_social_meta(original, blog_url)
+            if normalized != original:
+                html_path.write_text(normalized, encoding="utf-8")
+                updated += 1
+        except Exception as e:
+            print(f"Warning: failed to normalize social meta for {html_path}: {e}")
+
+    if updated:
+        print(f"Normalized social meta in {updated} existing post(s)")
+    return updated
 
 
 def load_meta():
@@ -74,7 +180,7 @@ def update_sitemap(meta):
     """
     Update sitemap.xml with all blog posts from meta
     """
-    base_url = "https://raymee675.github.io/Raymee-s-Secret-Base/"
+    base_url = BASE_URL
     
     # Create sitemap manually for better compatibility and formatting
     lines = [
@@ -196,6 +302,7 @@ def process_item(src_item: Path, meta: dict):
     image_exts = ('.png', '.jpg', '.jpeg', '.gif', '.svg', '.bmp', '.webp')
     video_exts = ('.mp4', '.mov', '.m4v', '.webm', '.ogv')
     audio_exts = ('.mp3', '.wav', '.aac', '.ogg', '.flac', '.m4a')
+    first_image_src = None
 
     # replace src attributes precisely using a callback so only the attribute value is changed
     def _replace_src(match):
@@ -248,6 +355,9 @@ def process_item(src_item: Path, meta: dict):
             dest_img_path = images_dir / dest_name
             convert_to_webp(src_path, dest_img_path)
             new_src = f"images/{dest_name}"
+            nonlocal first_image_src
+            if first_image_src is None:
+                first_image_src = new_src
             return original.replace(src, new_src, 1)
 
         # videos: copy into videos/
@@ -283,23 +393,21 @@ def process_item(src_item: Path, meta: dict):
 
     replaced = MEDIA_RE.sub(_replace_src, html)
 
-    # Update og:url meta tag with the blog's URL
-    blog_url = f"https://raymee675.github.io/Raymee-s-Secret-Base/data/BlogData/{next_id}/{dest_html_name}"
-    
-    def _replace_og_url(match):
-        return f'<meta property="og:url" content="{blog_url}">'
-    
-    # Check if og:url meta tag exists
-    if META_OG_URL_RE.search(replaced):
-        # Replace existing og:url
-        replaced = META_OG_URL_RE.sub(_replace_og_url, replaced)
-    else:
-        # Add og:url meta tag if not present (insert after <head> tag)
-        head_tag = re.search(r'<head[^>]*>', replaced, flags=re.I)
-        if head_tag:
-            insert_pos = head_tag.end()
-            og_meta = f'\n    <meta property="og:url" content="{blog_url}">'
-            replaced = replaced[:insert_pos] + og_meta + replaced[insert_pos:]
+    # Prefer the first converted image for card preview when available
+    if first_image_src:
+        if META_OG_IMAGE_RE.search(replaced):
+            replaced = META_OG_IMAGE_RE.sub(
+                f'<meta property="og:image" content="{first_image_src}">',
+                replaced,
+            )
+        if META_TWITTER_IMAGE_RE.search(replaced):
+            replaced = META_TWITTER_IMAGE_RE.sub(
+                f'<meta name="twitter:image" content="{first_image_src}">',
+                replaced,
+            )
+
+    blog_url = f"{BASE_URL}data/BlogData/{next_id}/{dest_html_name}"
+    replaced = normalize_social_meta(replaced, blog_url)
 
     # write HTML using original source filename
     with (post_dir / dest_html_name).open("w", encoding="utf-8") as f:
@@ -396,15 +504,15 @@ def main():
 
     # find candidates: files and directories directly under RAW_DIR, excluding archive
     candidates = [p for p in RAW_DIR.iterdir() if p.name != 'processed']
-    if not candidates:
-        print("No raw items to process.")
-        return
 
     changed = False
-    for item in sorted(candidates):
-        ok = process_item(item, meta)
-        if ok:
-            changed = True
+    if not candidates:
+        print("No raw items to process.")
+    else:
+        for item in sorted(candidates):
+            ok = process_item(item, meta)
+            if ok:
+                changed = True
 
     if changed:
         save_meta(meta)
@@ -412,6 +520,8 @@ def main():
         update_sitemap(meta)
     else:
         print("No changes made.")
+
+    normalize_existing_posts_social_meta(meta)
 
 
 if __name__ == '__main__':
