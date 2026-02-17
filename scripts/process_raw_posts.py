@@ -6,6 +6,7 @@ import json
 import shutil
 from pathlib import Path
 from datetime import datetime
+from urllib.parse import quote, urlsplit, urlunsplit
 import xml.etree.ElementTree as ET
 
 try:
@@ -42,16 +43,72 @@ def to_absolute_url(url: str, blog_url: str) -> str:
     if s.startswith("//"):
         return f"https:{s}"
     if s.startswith("/"):
-        return f"{BASE_URL.rstrip('/')}{s}"
+        absolute = f"{BASE_URL.rstrip('/')}{s}"
+        return normalize_public_url(absolute)
     blog_dir_url = blog_url.rsplit("/", 1)[0] + "/"
-    return f"{blog_dir_url}{s}"
+    absolute = f"{blog_dir_url}{s}"
+    return normalize_public_url(absolute)
 
 
-def normalize_social_meta(html: str, blog_url: str) -> str:
+def normalize_public_url(url: str) -> str:
+    s = (url or "").strip()
+    if not s:
+        return s
+    parts = urlsplit(s)
+    normalized_path = quote(parts.path, safe="/%")
+    normalized_query = quote(parts.query, safe="=&%")
+    normalized_fragment = quote(parts.fragment, safe="%")
+    return urlunsplit((parts.scheme, parts.netloc, normalized_path, normalized_query, normalized_fragment))
+
+
+def make_social_card_jpg(preferred_image: str, blog_url: str, html_path: Path = None) -> str:
+    if html_path is None:
+        return ""
+
+    image_ref = (preferred_image or "").strip()
+    if not image_ref:
+        return ""
+
+    source_path = None
+    if image_ref.startswith("http://") or image_ref.startswith("https://"):
+        base = BASE_URL.rstrip("/")
+        if image_ref.startswith(base + "/"):
+            rel = image_ref[len(base + "/"):]
+            source_path = ROOT / rel.replace("/", os.sep)
+    elif image_ref.startswith("//"):
+        source_path = None
+    else:
+        source_path = (html_path.parent / image_ref).resolve()
+
+    if not source_path or not source_path.exists() or not source_path.is_file():
+        return ""
+
+    ext = source_path.suffix.lower()
+    if ext not in (".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif", ".tif", ".tiff"):
+        return ""
+
+    card_path = html_path.parent / "images" / "twitter-card.jpg"
+    card_path.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with Image.open(source_path) as im:
+            if im.mode not in ("RGB",):
+                im = im.convert("RGB")
+            im.save(card_path, format="JPEG", quality=90, optimize=True)
+    except Exception as e:
+        print(f"Warning: failed to create social card JPG from {source_path}: {e}")
+        return ""
+
+    card_rel = card_path.relative_to(ROOT).as_posix()
+    card_url = f"{BASE_URL}{card_rel}"
+    return normalize_public_url(card_url)
+
+
+def normalize_social_meta(html: str, blog_url: str, html_path: Path = None) -> str:
     result = html
+    encoded_blog_url = normalize_public_url(blog_url)
 
     def _replace_og_url(_match):
-        return f'<meta property="og:url" content="{blog_url}">'
+        return f'<meta property="og:url" content="{encoded_blog_url}">'
 
     if META_OG_URL_RE.search(result):
         result = META_OG_URL_RE.sub(_replace_og_url, result)
@@ -59,7 +116,7 @@ def normalize_social_meta(html: str, blog_url: str) -> str:
         head_tag = re.search(r'<head[^>]*>', result, flags=re.I)
         if head_tag:
             insert_pos = head_tag.end()
-            result = result[:insert_pos] + f'\n    <meta property="og:url" content="{blog_url}">' + result[insert_pos:]
+            result = result[:insert_pos] + f'\n    <meta property="og:url" content="{encoded_blog_url}">' + result[insert_pos:]
 
     blog_dir_url = blog_url.rsplit("/", 1)[0] + "/"
     first_img_src = ""
@@ -83,7 +140,10 @@ def normalize_social_meta(html: str, blog_url: str) -> str:
     twitter_image_value = twitter_image_match.group(1).strip() if twitter_image_match else ""
 
     preferred_image = first_img_src or og_image_value or twitter_image_value or "images/Icon.webp"
-    absolute_image_url = to_absolute_url(preferred_image, blog_url)
+    absolute_image_url = to_absolute_url(preferred_image, encoded_blog_url)
+    card_jpg_url = make_social_card_jpg(preferred_image, encoded_blog_url, html_path)
+    if card_jpg_url:
+        absolute_image_url = card_jpg_url
 
     def _replace_og_image(_match):
         return f'<meta property="og:image" content="{absolute_image_url}">'
@@ -120,10 +180,10 @@ def normalize_existing_posts_social_meta(meta: dict):
         if not html_path.exists() or html_path.suffix.lower() != ".html":
             continue
 
-        blog_url = f"{BASE_URL}{rel_path.replace(os.sep, '/')}"
+        blog_url = normalize_public_url(f"{BASE_URL}{rel_path.replace(os.sep, '/')}")
         try:
             original = html_path.read_text(encoding="utf-8")
-            normalized = normalize_social_meta(original, blog_url)
+            normalized = normalize_social_meta(original, blog_url, html_path)
             if normalized != original:
                 html_path.write_text(normalized, encoding="utf-8")
                 updated += 1
@@ -406,8 +466,8 @@ def process_item(src_item: Path, meta: dict):
                 replaced,
             )
 
-    blog_url = f"{BASE_URL}data/BlogData/{next_id}/{dest_html_name}"
-    replaced = normalize_social_meta(replaced, blog_url)
+    blog_url = normalize_public_url(f"{BASE_URL}data/BlogData/{next_id}/{dest_html_name}")
+    replaced = normalize_social_meta(replaced, blog_url, post_dir / dest_html_name)
 
     # write HTML using original source filename
     with (post_dir / dest_html_name).open("w", encoding="utf-8") as f:
